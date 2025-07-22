@@ -20,7 +20,7 @@ if __name__ == '__main__':
     
     config = load_config('configs\config-mgdb-fwd.yml')
 
-    logging = get_logger(__name__, config['general']['log_file'])
+    logging = get_logger('test_mongodb', config['general']['log_file'])
 
     data = load_json_data(config['general']['data_file'])
     
