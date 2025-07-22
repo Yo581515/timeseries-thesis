@@ -1,0 +1,14 @@
+{
+    "time": "$$NOW",
+    "sensor_id": "sensor_001",
+    "temperature": "$$RAND_FLOAT(20,30,1)",
+    "humidity": "$$RAND_FLOAT(30,60,1)",
+    "pressure": "$$RAND_FLOAT(1000,1020,1)",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            "$$RAND_FLOAT(-180,180,6)",
+            "$$RAND_FLOAT(-90,90,6)"
+        ]
+    }
+}
