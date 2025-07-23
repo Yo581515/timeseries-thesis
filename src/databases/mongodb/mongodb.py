@@ -48,55 +48,7 @@ class MongoDBClient:
             return False
         self.disconnect()
         return True
-    
-    # def drop_collection(self):
-    #     if not self.connect():
-    #         self.logging.error("Failed to connect to MongoDB.")
-    #         return False
-    #     try:
-    #         db = self.client[self.database_name]
-    #     except Exception as e:
-    #         self.logging.error("Database error: " + str(e))
-    #         self.disconnect()
-    #         return False
-    #     success = drop_collection(db, self.collection_name, self.logging)
-    #     self.disconnect()
-    #     return success
-    
-    
-    # def insert_one(self, one_data_point):
-    #     if not self.connect():
-    #         self.logging.error("Failed to connect to MongoDB.")
-    #         return False
-    #     try:
-    #         db = self.client[self.database_name]
-    #     except Exception as e:
-    #         self.logging.error("Database error: " + str(e))
-    #         self.disconnect()
-    #         return False
-    #     success = insert_one(db, self.collection_name, one_data_point, self.logging)
-    #     self.disconnect()
-    #     return success
-    
 
-
-    # def insert_many(self, data_points: list):
-    #     if not self.connect():
-    #         self.logging.error("Failed to connect to MongoDB.")
-    #         return False
-    #     try:
-    #         db = self.client[self.database_name]
-    #     except Exception as e:
-    #         self.logging.error("Database error: " + str(e))
-    #         self.disconnect()
-    #         return False
-
-    #     success = insert_many(db, self.collection_name, data_points, self.logging)
-    #     self.disconnect()
-    #     return success
-    
-    
-    
 if __name__ == '__main__':
     if True:
         print('^_^')

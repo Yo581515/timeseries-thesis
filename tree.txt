@@ -1,0 +1,63 @@
+├── .gitignore
+├── configs
+│   ├── config-influx-fwd.yml
+│   ├── config-mgdb-fwd.yml
+│   ├── config-test-mgdb-fwd.yml
+│   ├── config-timescale-fwd.yml
+├── data
+│   ├── sample_data.json
+│   ├── temp_sample_data.json
+│   ├── test_sample_data.json
+├── generate_tree.sh
+├── insert.txt
+├── logs
+│   ├── mongodb_forwarder.log
+├── main.py
+├── notebooks
+│   ├── analysis.ipynb
+├── README.md
+├── requirements.txt
+├── sample_data_collection.json
+├── src
+│   ├── benchmark
+│   │   ├── benchmark_runner.py
+│   │   ├── metrics.py
+│   │   ├── timer.py
+│   ├── cloud_logger
+│   │   ├── sql_uploader.py
+│   ├── common
+│   │   ├── __pycache__
+│   │   ├── config.py
+│   │   ├── data_loader.py
+│   │   ├── logger.py
+│   ├── databases
+│   │   ├── configs
+│   │   │   ├── __pycache__
+│   │   │   ├── mongodb_config.py
+│   │   ├── influxdb
+│   │   ├── mongodb
+│   │   │   ├── __pycache__
+│   │   │   ├── mongodb.py
+│   │   │   ├── mongodb_functions
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── delete.py
+│   │   │   │   ├── fetch.py
+│   │   │   │   ├── insert.py
+│   │   │   │   ├── why.txt
+│   │   │   ├── mongodb_repository.py
+│   │   │   ├── mongodb_utils
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── utils.py
+│   │   │   ├── test_mongodb.py
+│   │   │   ├── use_of_repo.png
+│   │   ├── timescaledb
+│   │   ├── validators
+│   │   │   ├── json_validator.py
+├── tests
+│   ├── test_databases
+│   │   ├── test_mongodb
+│   │   │   ├── test_mongodb_functions.py
+├── thesis-report
+│   ├── main.tex
+├── tree.txt
+├── usefull_commands.txt
