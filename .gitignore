@@ -142,3 +142,10 @@ cython_debug/
 config-*
 *.yml
 *.yaml
+
+# Local files
+insert.txt
+
+# PyCharm
+.idea/
+*.iml
