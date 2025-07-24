@@ -1,6 +1,6 @@
 # src/databases/mongodb/mongodb_functions/fetch.py
 
-from src.databases.mongodb.mongodb import MongoDBClient
+from src.databases.mongodb.client import MongoDBClient
 
 def find_by_query(mongodb_client: MongoDBClient, query: dict) -> list[dict]:
     mongodb_client.logger.info(f'Fetching documents by query: {query}')

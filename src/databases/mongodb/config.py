@@ -1,4 +1,4 @@
-# src/config/mongodb_config.py
+# src/mongodb/mongodb_config.py
 
 class MongoDBConfigurationException(Exception):
     pass
@@ -19,7 +19,7 @@ class MongoDBConfig:
             f'Collection: {self.MONGODB_COLLECTION_NAME}'
         )
 
-def get_mongodb_config(config_dict) -> MongoDBConfig:
+def get_mongodb_config(config_dict: dict) -> MongoDBConfig:
     try:
         return MongoDBConfig(
             username=config_dict['MONGO_DB_USER'],

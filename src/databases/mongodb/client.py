@@ -5,7 +5,7 @@ from pymongo.server_api import ServerApi
 import certifi
 import logging
 
-from src.databases.configs.mongodb_config import MongoDBConfig
+from src.databases.mongodb.config import MongoDBConfig
 
 class MongoDBClient:
     def __init__(self, mongodb_config: MongoDBConfig, logger: logging.Logger):
@@ -27,6 +27,7 @@ class MongoDBClient:
         try:
             self.client = MongoClient(
                 self.uri, server_api=ServerApi('1'), tlsCAFile=certifi.where())
+            self.logger.info('Connected to MongoDB')
             return True
         except Exception as e:
             self.logger.error("Connection error: " + str(e))
@@ -35,19 +36,6 @@ class MongoDBClient:
     def disconnect(self):
         self.client.close()
         self.logger.info('Disconnected')
-        
-
-    def ping(self):
-        self.connect()
-        try:
-            self.client.admin.command('ping')
-            self.logger.info(
-                "Pinged your deployment. You successfully connected to MongoDB!")
-        except Exception as e:
-            self.logger.error(str(e))
-            return False
-        self.disconnect()
-        return True
 
 if __name__ == '__main__':
     if True:

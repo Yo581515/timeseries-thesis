@@ -4,15 +4,16 @@ from pprint import pprint
 import random
 import time
 
-from src.databases.mongodb.mongodb_repository import MongoDBRepository
+
 from src.common.config import load_config
 from src.common.logger import get_logger
 from src.common.data_loader import load_json_data
 
-from src.databases.configs.mongodb_config import get_mongodb_config
-from src.databases.mongodb.mongodb import MongoDBClient
+from src.databases.mongodb.config import get_mongodb_config
+from src.databases.mongodb.client import MongoDBClient
+from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
-from src.databases.mongodb.mongodb_utils.utils import resolve_data
+from src.databases.mongodb.utils.data_utils import resolve_data
 
 
 def rand_float(low, high, precision):
@@ -44,12 +45,18 @@ if __name__ == '__main__':
         end = time.time()
         pprint(f"Inserted in {end - start:.2f} seconds.")
         
+        start = time.time()
         print("using find_by_query:")
         pprint(mongodb_repo.find_by_query({"meta.source": "Node 1"}))
-        print()
+        end = time.time()
+        print(f"Find by query took {end - start:.2f} seconds.")
+
         print("using aggregate:")
         pipeline = [
             {"$match": {"meta.source": "Node 1"}},
             {"$project": {"time": 1, "_id": 1}}
         ]
+        start = time.time()
         pprint(mongodb_repo.aggregate(pipeline))
+        end = time.time()
+        print(f"Aggregated in {end - start:.2f} seconds.")

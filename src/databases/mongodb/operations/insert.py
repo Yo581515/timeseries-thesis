@@ -1,6 +1,6 @@
 # src/databases/mongodb/mongodb_functions/insert.py
 
-from src.databases.mongodb.mongodb import MongoDBClient
+from src.databases.mongodb.client import MongoDBClient
 
 
 def insert_one(mongodb_client : MongoDBClient, data_point: dict)  -> bool:

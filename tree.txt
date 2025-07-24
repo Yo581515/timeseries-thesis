@@ -12,12 +12,12 @@
 ├── insert.txt
 ├── logs
 │   ├── mongodb_forwarder.log
+│   ├── test_mongodb_forwarder.log
 ├── main.py
 ├── notebooks
 │   ├── analysis.ipynb
 ├── README.md
 ├── requirements.txt
-├── sample_data_collection.json
 ├── src
 │   ├── benchmark
 │   │   ├── benchmark_runner.py
@@ -31,32 +31,38 @@
 │   │   ├── data_loader.py
 │   │   ├── logger.py
 │   ├── databases
-│   │   ├── configs
-│   │   │   ├── __pycache__
-│   │   │   ├── mongodb_config.py
 │   │   ├── influxdb
 │   │   ├── mongodb
 │   │   │   ├── __pycache__
-│   │   │   ├── mongodb.py
-│   │   │   ├── mongodb_functions
+│   │   │   ├── client.py
+│   │   │   ├── config.py
+│   │   │   ├── mongodb_repository.py
+│   │   │   ├── operations
 │   │   │   │   ├── __pycache__
 │   │   │   │   ├── delete.py
 │   │   │   │   ├── fetch.py
 │   │   │   │   ├── insert.py
 │   │   │   │   ├── why.txt
-│   │   │   ├── mongodb_repository.py
-│   │   │   ├── mongodb_utils
-│   │   │   │   ├── __pycache__
-│   │   │   │   ├── utils.py
 │   │   │   ├── test_mongodb.py
 │   │   │   ├── use_of_repo.png
+│   │   │   ├── utils
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── data_utils.py
 │   │   ├── timescaledb
 │   │   ├── validators
 │   │   │   ├── json_validator.py
 ├── tests
 │   ├── test_databases
 │   │   ├── test_mongodb
-│   │   │   ├── test_mongodb_functions.py
+│   │   │   ├── __pycache__
+│   │   │   ├── conftest.py
+│   │   │   ├── setup.py
+│   │   │   ├── test_client.py
+│   │   │   ├── test_operations.py
+│   │   │   ├── test_repository.py
+│   │   │   ├── test_utils
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── test_data_utils.py
 ├── thesis-report
 │   ├── main.tex
 ├── tree.txt

@@ -1,6 +1,6 @@
 # src/databases/mongodb/mongodb_functions/delete.py
 
-from src.databases.mongodb.mongodb import MongoDBClient
+from src.databases.mongodb.client import MongoDBClient
 
 def delete_by_query(mongodb_client : MongoDBClient, query: dict) -> bool:
     mongodb_client.logger.info(f'Deleting documents by query: {query}')
