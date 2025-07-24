@@ -52,17 +52,18 @@
 │   │   ├── validators
 │   │   │   ├── json_validator.py
 ├── tests
-│   ├── test_databases
-│   │   ├── test_mongodb
-│   │   │   ├── __pycache__
-│   │   │   ├── conftest.py
-│   │   │   ├── setup.py
-│   │   │   ├── test_client.py
-│   │   │   ├── test_operations.py
-│   │   │   ├── test_repository.py
-│   │   │   ├── test_utils
+│   ├── test_src
+│   │   ├── test_common
+│   │   ├── test_databases
+│   │   │   ├── test_mongodb
 │   │   │   │   ├── __pycache__
-│   │   │   │   ├── test_data_utils.py
+│   │   │   │   ├── conftest.py
+│   │   │   │   ├── test_client.py
+│   │   │   │   ├── test_operations.py
+│   │   │   │   ├── test_repository.py
+│   │   │   │   ├── test_utils
+│   │   │   │   │   ├── __pycache__
+│   │   │   │   │   ├── test_data_utils.py
 ├── thesis-report
 │   ├── main.tex
 ├── tree.txt

@@ -23,7 +23,7 @@ class MongoDBClient:
         
         self.client = None
 
-    def connect(self):
+    def connect(self) -> bool:
         try:
             self.client = MongoClient(
                 self.uri, server_api=ServerApi('1'), tlsCAFile=certifi.where())
@@ -32,10 +32,10 @@ class MongoDBClient:
         except Exception as e:
             self.logger.error("Connection error: " + str(e))
             return False
-        
-    def disconnect(self):
+
+    def disconnect(self) -> None:
         self.client.close()
-        self.logger.info('Disconnected')
+        self.logger.info('Disconnected from MongoDB')
 
 if __name__ == '__main__':
     if True:
