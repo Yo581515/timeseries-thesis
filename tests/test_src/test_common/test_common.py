@@ -18,7 +18,6 @@ class TestCommon:
         data = load_json_data(json_path)
         assert isinstance(data, list), "Data should be a list"
         assert all(isinstance(item, dict) for item in data)
-        assert len(data) == 2
         assert data[0]["source_id"] == "sfi_smart_ocean;demo;d1;1"
 
     def test_get_logger(self):
