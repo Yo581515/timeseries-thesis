@@ -1,14 +1,17 @@
 # src/databases/mongodb/mongodb_repo.py
 
 from src.databases.mongodb.client import MongoDBClient
-from src.databases.mongodb.operations.delete import delete_by_query
-from src.databases.mongodb.operations.insert import insert_one, insert_many
-from src.databases.mongodb.operations.fetch import find_by_query, aggregate
+from src.databases.mongodb.operations.delete import DeleteOperations
+from src.databases.mongodb.operations.insert import InsertOperations
+from src.databases.mongodb.operations.fetch import FetchOperations
 
 class MongoDBRepository:
     def __init__(self, mongodb_client: MongoDBClient):
         self.mongodb_client = mongodb_client
-        
+        self.insert_operations = InsertOperations(mongodb_client)
+        self.delete_operations = DeleteOperations(mongodb_client)
+        self.fetch_operations = FetchOperations(mongodb_client)
+
     def ping(self):
         self.mongodb_client.connect()
         try:
@@ -27,7 +30,7 @@ class MongoDBRepository:
             self.mongodb_client.logger.error("Failed to connect to MongoDB.")
             return False
         try:
-            return insert_one(self.mongodb_client, data_point)
+            return self.insert_operations.insert_one(data_point)
         finally:
             self.mongodb_client.disconnect()
 
@@ -36,7 +39,7 @@ class MongoDBRepository:
             self.mongodb_client.logger.error("Failed to connect to MongoDB.")
             return False
         try:
-            return insert_many(self.mongodb_client, data_points)
+            return self.insert_operations.insert_many(data_points)
         finally:
             self.mongodb_client.disconnect()
 
@@ -45,7 +48,7 @@ class MongoDBRepository:
             self.mongodb_client.logger.error("Failed to connect to MongoDB.")
             return False
         try:
-            return delete_by_query(self.mongodb_client, query)
+            return self.delete_operations.delete_by_query(query)
         finally:
             self.mongodb_client.disconnect()
 
@@ -54,7 +57,7 @@ class MongoDBRepository:
             self.mongodb_client.logger.error("Failed to connect to MongoDB.")
             return []
         try:
-            return find_by_query(self.mongodb_client, query)
+            return self.fetch_operations.find_by_query(query)
         finally:
             self.mongodb_client.disconnect()
 
@@ -63,6 +66,6 @@ class MongoDBRepository:
             self.mongodb_client.logger.error("Failed to connect to MongoDB.")
             return []
         try:
-            return aggregate(self.mongodb_client, pipeline)
+            return self.fetch_operations.aggregate(pipeline)
         finally:
             self.mongodb_client.disconnect()

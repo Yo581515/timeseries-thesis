@@ -7,13 +7,16 @@ from datetime import datetime
 def rand_float(a, b, precision):
     return round(random.uniform(a, b), precision)
 
-def resolve_data(data_point: dict, logger: logging.Logger) -> dict:
+def resolve_data(data_point: dict, logger: logging.Logger) -> bool:
     """Apply resolution steps to a data point. Always returns a dict."""
-    convert_time(data_point, logger)
-    convert_location(data_point, logger)
-    extract_meta_fields(data_point, logger)
-    return data_point
-
+    try:
+        convert_time(data_point, logger)
+        convert_location(data_point, logger)
+        extract_meta_fields(data_point, logger)
+        return True
+    except Exception as e:
+        logger.error(f"[resolve_data] Resolution error: {e}")
+        return False
 
 def convert_time(data_point: dict, logger: logging.Logger) -> bool:
     """Convert 'time' field to datetime."""
@@ -30,12 +33,15 @@ def convert_location(data_point: dict, logger: logging.Logger) -> bool:
     """Convert 'location' to GeoJSON Point."""
     try:
         loc = data_point.get('location')
-        if loc and 'latitude' in loc and 'longitude' in loc:
+        if 'latitude' in loc and 'longitude' in loc:
             data_point['location'] = {
                 "type": "Point",
                 "coordinates": [loc['longitude'], loc['latitude']]
             }
-        return True
+            return True
+        else:
+            logger.error("[convert_location] Missing latitude or longitude keys.")
+            return False
     except Exception as e:
         logger.error(f"[convert_location] Location formatting error: {e}")
         return False

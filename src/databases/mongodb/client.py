@@ -33,9 +33,14 @@ class MongoDBClient:
             self.logger.error("Connection error: " + str(e))
             return False
 
-    def disconnect(self) -> None:
-        self.client.close()
-        self.logger.info('Disconnected from MongoDB')
+    def disconnect(self) -> bool:
+        if self.client:
+            self.client.close()
+            self.logger.info('Disconnected from MongoDB')
+            return True
+        else:
+            self.logger.warning('No active MongoDB connection to disconnect')
+        return False
 
 if __name__ == '__main__':
     if True:

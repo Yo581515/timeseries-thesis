@@ -3,7 +3,7 @@
 import yaml
 import os
 
-def load_config(config_path) -> dict:
+def load_config(config_path : str) -> dict:
     """
     Loads YAML config file from the given path.
     """

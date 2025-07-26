@@ -1,0 +1,44 @@
+[
+  {
+    "source": "Node 1",
+    "source_id": "sfi_smart_ocean;demo;d1;1",
+    "location": {
+      "latitude": 60.090717,
+      "longitude": 5.263733
+    },
+    "time": "2024-09-18T20:06:45.179000",
+    "observations": [
+      {
+        "source": "Battery module PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;BATTERY_MODULE",
+        "parameter": "battery_voltage_mv",
+        "value": 3624.0,
+        "unit": "mV",
+        "qualityCodes": [
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "source": "Node 1",
+    "source_id": "sfi_smart_ocean;demo;d1;1",
+    "location": {
+      "latitude": 60.090717,
+      "longitude": 5.263733
+    },
+    "time": "2024-09-18T21:11:03.924000",
+    "observations": [
+      {
+        "source": "Battery module PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;BATTERY_MODULE",
+        "parameter": "battery_voltage_mv",
+        "value": 3624.0,
+        "unit": "mV",
+        "qualityCodes": [
+          0
+        ]
+      }
+    ]
+  }
+]

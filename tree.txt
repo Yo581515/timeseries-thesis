@@ -2,12 +2,10 @@
 ├── configs
 │   ├── config-influx-fwd.yml
 │   ├── config-mgdb-fwd.yml
-│   ├── config-test-mgdb-fwd.yml
 │   ├── config-timescale-fwd.yml
 ├── data
 │   ├── sample_data.json
 │   ├── temp_sample_data.json
-│   ├── test_sample_data.json
 ├── generate_tree.sh
 ├── insert.txt
 ├── logs
@@ -52,14 +50,27 @@
 │   │   ├── validators
 │   │   │   ├── json_validator.py
 ├── tests
+│   ├── configs
+│   │   ├── config-test-mgdb-fwd.yml
+│   ├── data
+│   │   ├── test_sample_data.json
+│   ├── logs
+│   │   ├── test_logs.log
 │   ├── test_src
 │   │   ├── test_common
+│   │   │   ├── __pycache__
+│   │   │   ├── test_common.py
 │   │   ├── test_databases
+│   │   │   ├── test_db2
 │   │   │   ├── test_mongodb
 │   │   │   │   ├── __pycache__
 │   │   │   │   ├── conftest.py
 │   │   │   │   ├── test_client.py
-│   │   │   │   ├── test_operations.py
+│   │   │   │   ├── test_operations
+│   │   │   │   │   ├── __pycache__
+│   │   │   │   │   ├── test_delete.py
+│   │   │   │   │   ├── test_fetch.py
+│   │   │   │   │   ├── test_insert.py
 │   │   │   │   ├── test_repository.py
 │   │   │   │   ├── test_utils
 │   │   │   │   │   ├── __pycache__
