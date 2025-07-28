@@ -3,7 +3,7 @@
 from pprint import pprint
 import random
 import time
-
+import os
 
 from src.common.config import load_config
 from src.common.logger import get_logger
@@ -21,12 +21,23 @@ def rand_float(low, high, precision):
   
 if __name__ == '__main__':
 
-    config = load_config(f'configs/config-mgdb-fwd.yml')
-    
-    logger = get_logger('test_mongodb', config['general']['log_file'])
+    config = {
+        'general': {
+            'mongodb_data_file': 'data/sample_data.json',
+            'mongodb_log_file': 'logs/mongodb_forwarder.log'
+        },
+        'mongodb': {
+            'MONGO_DB_USER': os.getenv('MONGO_DB_USER', ''),
+            'MONGO_DB_PASSWORD': os.getenv('MONGO_DB_PASSWORD', ''),
+            'MONGO_DB_CLUSTER': os.getenv('MONGO_DB_CLUSTER', ''),
+            'MONGODB_DATABASE_NAME': os.getenv('MONGODB_TIMESERIES_DATABASE_NAME', ''),
+            'MONGODB_COLLECTION_NAME': os.getenv('MONGODB_TIMESERIES_COLLECTION_NAME', '')
+        }
+    }
+    logger = get_logger('test_mongodb', config['general']['mongodb_log_file'])
 
     
-    data = load_json_data(config['general']['data_file'])
+    data = load_json_data(config['general']['mongodb_data_file'])
     for i, doc in enumerate(data):
         data[i] = resolve_data(doc, logger)
     # pprint(data[0])

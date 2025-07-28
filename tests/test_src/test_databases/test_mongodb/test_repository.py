@@ -1,7 +1,7 @@
 # tests/test_src/test_databases/test_mongodb/test_repository.py
+
 from unittest.mock import MagicMock, patch
 
-from src.databases.mongodb.client import MongoDBClient
 from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
 class TestMongoDBRepository:

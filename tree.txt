@@ -1,3 +1,8 @@
+├── .github
+│   ├── workflows
+│   │   ├── db2
+│   │   ├── mongodb
+│   │   │   ├── workflow.yml
 ├── .gitignore
 ├── configs
 │   ├── config-influx-fwd.yml
@@ -56,6 +61,7 @@
 │   │   ├── test_sample_data.json
 │   ├── logs
 │   │   ├── test_logs.log
+│   │   ├── test_mongodb.log
 │   │   ├── test_mongodb_forwarder.log
 │   ├── test_src
 │   │   ├── test_common

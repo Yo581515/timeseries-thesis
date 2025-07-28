@@ -1,4 +1,3 @@
 PyYAML
 pymongo
 certifi
-pytest

@@ -1,4 +1,4 @@
-# tests/test_src/test_common/common.py
+# tests/test_src/test_common/test_common.py
 
 from src.common.config import load_config
 from src.common.logger import get_logger
