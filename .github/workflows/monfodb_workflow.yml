@@ -71,7 +71,6 @@ jobs:
         
   mongodb-integration-tests:
     runs-on: ubuntu-latest
-    needs: mongodb-tests
     steps:
     - uses: actions/checkout@v4
 
