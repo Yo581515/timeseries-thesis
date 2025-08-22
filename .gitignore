@@ -147,3 +147,7 @@ insert.txt
 # PyCharm
 .idea/
 *.iml
+
+
+# Thesis report files
+/thesis-report/
