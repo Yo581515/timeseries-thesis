@@ -150,4 +150,5 @@ insert.txt
 
 
 # Thesis report files
-/thesis-report/
+/thesis-report/*
+!/thesis-report/thesis.pdf
