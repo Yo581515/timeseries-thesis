@@ -89,3 +89,19 @@ class TestMongoDBRepository:
         # Assert
         assert result == [{"key": "value"}]
         aggregate_mock.assert_called_once_with(pipeline)
+
+
+    @patch.object(MongoDBRepository, 'update_one')
+    def test_update_one(self, update_one_mock: MagicMock):
+        # Arrange
+        update_one_mock.return_value = True
+        repository = MongoDBRepository(mongodb_client=MagicMock())
+        query = {"key": "value"}
+        update = {"$set": {"key": "new_value"}}
+
+        # Act
+        result = repository.update_one(query, update)
+
+        # Assert
+        assert result is True
+        update_one_mock.assert_called_once_with(query, update)

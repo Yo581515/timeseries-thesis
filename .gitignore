@@ -147,8 +147,4 @@ insert.txt
 # PyCharm
 .idea/
 *.iml
-
-
-# Thesis report files
-/thesis-report/*
-!/thesis-report/thesis.pdf
+find_env_var_test.py

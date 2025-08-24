@@ -1,4 +1,4 @@
-# src/databases/mongodb/mongodb_functions/insert.py
+# src/databases/mongodb/operations/insert.py
 
 from src.databases.mongodb.client import MongoDBClient
 

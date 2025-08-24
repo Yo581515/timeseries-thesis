@@ -1,4 +1,4 @@
-# src/databases/mongodb/mongodb_functions/delete.py
+# src/databases/mongodb/operations/delete.py
 
 from src.databases.mongodb.client import MongoDBClient
 

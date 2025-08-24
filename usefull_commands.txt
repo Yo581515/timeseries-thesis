@@ -1,1 +1,2 @@
 clear && ./generate_tree.sh && export PYTHONPATH=$(pwd) && python src/databases/mongodb/test_mongodb.py
+nano ~/.bashrc

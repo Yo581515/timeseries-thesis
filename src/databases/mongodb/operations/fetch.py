@@ -1,4 +1,4 @@
-# src/databases/mongodb/mongodb_functions/fetch.py
+# src/databases/mongodb/operations/fetch.py
 
 from src.databases.mongodb.client import MongoDBClient
 

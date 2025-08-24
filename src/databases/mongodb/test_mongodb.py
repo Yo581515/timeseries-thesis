@@ -21,27 +21,23 @@ def rand_float(low, high, precision):
   
 if __name__ == '__main__':
 
-    config = {
-        'general': {
-            'mongodb_data_file': 'data/sample_data.json',
-            'mongodb_log_file': 'logs/mongodb_forwarder.log'
-        },
-        'mongodb': {
-            'MONGO_DB_USER': os.getenv('MONGO_DB_USER', ''),
-            'MONGO_DB_PASSWORD': os.getenv('MONGO_DB_PASSWORD', ''),
-            'MONGO_DB_CLUSTER': os.getenv('MONGO_DB_CLUSTER', ''),
-            'MONGODB_DATABASE_NAME': os.getenv('MONGODB_TIMESERIES_DATABASE_NAME', ''),
-            'MONGODB_COLLECTION_NAME': os.getenv('MONGODB_TIMESERIES_COLLECTION_NAME', '')
-        }
-    }
-    logger = get_logger('test_mongodb', config['general']['mongodb_log_file'])
+    config_file_path = './configs/config-mgdb-fwd.yml'
+
+    config = load_config(config_file_path)
+
+    # pprint(config)
+
+    logger = get_logger('test_mongodb', config['general']['log_file'])
 
     
-    data = load_json_data(config['general']['mongodb_data_file'])
+    data = load_json_data(config['general']['data_file'])
+    pprint(f"Loaded {len(data)} data points.")
     for i, doc in enumerate(data):
-        data[i] = resolve_data(doc, logger)
-    # pprint(data[0])
-    # print()
+        resolve_data(doc, logger)
+    pprint(f"Loaded {len(data)} data points.")
+    print()
+    pprint(data[0])
+    print()
 
     mongodb_config = get_mongodb_config(config_dict=config['mongodb'])
     mongoDBClient = MongoDBClient(mongodb_config=mongodb_config, logger=logger)
