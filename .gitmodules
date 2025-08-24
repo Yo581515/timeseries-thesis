@@ -1,0 +1,3 @@
+[submodule "thesis-report"]
+	path = thesis-report
+	url = https://github.com/Yo581515/madi-thesis-latex-template.git
