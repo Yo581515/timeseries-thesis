@@ -139,7 +139,7 @@ cython_debug/
 
 
 # Configuration files
-config-*
+# config-*
 
 # Local files
 insert.txt

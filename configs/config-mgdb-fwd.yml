@@ -1,0 +1,10 @@
+mongodb:
+  MONGO_DB_USER: "{{ env_var('MONGO_DB_USER')}}"
+  MONGO_DB_PASSWORD: "{{ env_var('MONGO_DB_PASSWORD')}}"
+  MONGO_DB_CLUSTER: "{{ env_var('MONGO_DB_CLUSTER')}}"
+  MONGODB_DATABASE_NAME: "{{ env_var('MONGODB_TIMESERIES_DATABASE_NAME')}}"
+  MONGODB_COLLECTION_NAME: "{{ env_var('MONGODB_TIMESERIES_COLLECTION_NAME')}}"
+
+general:
+  data_file: "./data/sample_data.json"
+  log_file: "./logs/mongodb_forwarder.log"
