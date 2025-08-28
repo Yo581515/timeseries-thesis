@@ -1,9 +1,10 @@
+├── .env
 ├── .github
 │   ├── workflows
-│   │   ├── db2
-│   │   ├── mongodb
-│   │   │   ├── workflow.yml
+│   │   ├── monfodb_workflow.yml
 ├── .gitignore
+├── .gitmodules
+├── README.md
 ├── configs
 │   ├── config-influx-fwd.yml
 │   ├── config-mgdb-fwd.yml
@@ -11,6 +12,7 @@
 ├── data
 │   ├── sample_data.json
 │   ├── temp_sample_data.json
+├── find_env_var_test.py
 ├── generate_tree.sh
 ├── insert.txt
 ├── logs
@@ -19,7 +21,7 @@
 ├── main.py
 ├── notebooks
 │   ├── analysis.ipynb
-├── README.md
+├── requirements-dev.txt
 ├── requirements.txt
 ├── src
 │   ├── benchmark
@@ -45,6 +47,7 @@
 │   │   │   │   ├── delete.py
 │   │   │   │   ├── fetch.py
 │   │   │   │   ├── insert.py
+│   │   │   │   ├── update.py
 │   │   │   │   ├── why.txt
 │   │   │   ├── test_mongodb.py
 │   │   │   ├── use_of_repo.png
@@ -61,7 +64,6 @@
 │   │   ├── test_sample_data.json
 │   ├── logs
 │   │   ├── test_logs.log
-│   │   ├── test_mongodb.log
 │   │   ├── test_mongodb_forwarder.log
 │   ├── test_src
 │   │   ├── test_common
@@ -79,11 +81,61 @@
 │   │   │   │   │   ├── test_delete.py
 │   │   │   │   │   ├── test_fetch.py
 │   │   │   │   │   ├── test_insert.py
+│   │   │   │   │   ├── test_update.py
 │   │   │   │   ├── test_repository.py
 │   │   │   │   ├── test_utils
 │   │   │   │   │   ├── __pycache__
 │   │   │   │   │   ├── test_data_utils.py
 ├── thesis-report
-│   ├── main.tex
+│   ├── .git
+│   ├── .gitignore
+│   ├── LICENSE
+│   ├── Makefile
+│   ├── README.md
+│   ├── appendix.aux
+│   ├── appendix.tex
+│   ├── background.aux
+│   ├── background.tex
+│   ├── code
+│   │   ├── BoksVolum.java
+│   ├── conclusion.aux
+│   ├── conclusion.tex
+│   ├── design.aux
+│   ├── design.tex
+│   ├── evaluation.aux
+│   ├── evaluation.tex
+│   ├── figs
+│   │   ├── framework.png
+│   ├── framside-masteroppgave-bokm.docx
+│   ├── implementation.aux
+│   ├── implementation.tex
+│   ├── introduction.aux
+│   ├── introduction.tex
+│   ├── logos
+│   │   ├── hvl_logo.pdf
+│   │   ├── hvllogo_wide.png
+│   │   ├── logo.pdf
+│   ├── macros.tex
+│   ├── preamble.tex
+│   ├── preface
+│   │   ├── abstract.aux
+│   │   ├── abstract.tex
+│   │   ├── acknowledgements.aux
+│   │   ├── acknowledgements.tex
+│   ├── thesis.aux
+│   ├── thesis.bbl
+│   ├── thesis.bib
+│   ├── thesis.blg
+│   ├── thesis.brf
+│   ├── thesis.fdb_latexmk
+│   ├── thesis.fls
+│   ├── thesis.lof
+│   ├── thesis.log
+│   ├── thesis.lot
+│   ├── thesis.out
+│   ├── thesis.pdf
+│   ├── thesis.synctex.gz
+│   ├── thesis.tex
+│   ├── thesis.toc
 ├── tree.txt
 ├── usefull_commands.txt
