@@ -143,8 +143,13 @@ cython_debug/
 
 # Local files
 insert.txt
+bib.txt
 
 # PyCharm
 .idea/
 *.iml
 find_env_var_test.py
+
+
+# notes
+notes.rtf
