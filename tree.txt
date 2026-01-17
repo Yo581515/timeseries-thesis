@@ -4,7 +4,9 @@
 │   │   ├── monfodb_workflow.yml
 ├── .gitignore
 ├── .gitmodules
+├── .indent.log
 ├── README.md
+├── alias_wsl_windows.txt
 ├── configs
 │   ├── config-influx-fwd.yml
 │   ├── config-mgdb-fwd.yml
@@ -12,12 +14,8 @@
 ├── data
 │   ├── sample_data.json
 │   ├── temp_sample_data.json
-├── find_env_var_test.py
 ├── generate_tree.sh
-├── insert.txt
-├── logs
-│   ├── mongodb_forwarder.log
-│   ├── test_mongodb_forwarder.log
+├── indent.log
 ├── main.py
 ├── notebooks
 │   ├── analysis.ipynb
@@ -31,19 +29,20 @@
 │   ├── cloud_logger
 │   │   ├── sql_uploader.py
 │   ├── common
-│   │   ├── __pycache__
 │   │   ├── config.py
 │   │   ├── data_loader.py
 │   │   ├── logger.py
 │   ├── databases
+│   │   ├── Amazom Timestream
+│   │   │   ├── __init_.py
 │   │   ├── influxdb
+│   │   │   ├── __init_.py
 │   │   ├── mongodb
 │   │   │   ├── __pycache__
 │   │   │   ├── client.py
 │   │   │   ├── config.py
 │   │   │   ├── mongodb_repository.py
 │   │   │   ├── operations
-│   │   │   │   ├── __pycache__
 │   │   │   │   ├── delete.py
 │   │   │   │   ├── fetch.py
 │   │   │   │   ├── insert.py
@@ -52,9 +51,9 @@
 │   │   │   ├── test_mongodb.py
 │   │   │   ├── use_of_repo.png
 │   │   │   ├── utils
-│   │   │   │   ├── __pycache__
 │   │   │   │   ├── data_utils.py
 │   │   ├── timescaledb
+│   │   │   ├── __init__.py
 │   │   ├── validators
 │   │   │   ├── json_validator.py
 ├── tests
@@ -62,29 +61,23 @@
 │   │   ├── config-test-mgdb-fwd.yml
 │   ├── data
 │   │   ├── test_sample_data.json
-│   ├── logs
-│   │   ├── test_logs.log
-│   │   ├── test_mongodb_forwarder.log
 │   ├── test_src
 │   │   ├── test_common
 │   │   │   ├── __pycache__
 │   │   │   ├── test_common.py
 │   │   ├── test_databases
-│   │   │   ├── test_db2
 │   │   │   ├── test_mongodb
 │   │   │   │   ├── __pycache__
 │   │   │   │   ├── conftest.py
 │   │   │   │   ├── test_client.py
 │   │   │   │   ├── test_mongodb_integration.py
 │   │   │   │   ├── test_operations
-│   │   │   │   │   ├── __pycache__
 │   │   │   │   │   ├── test_delete.py
 │   │   │   │   │   ├── test_fetch.py
 │   │   │   │   │   ├── test_insert.py
 │   │   │   │   │   ├── test_update.py
 │   │   │   │   ├── test_repository.py
 │   │   │   │   ├── test_utils
-│   │   │   │   │   ├── __pycache__
 │   │   │   │   │   ├── test_data_utils.py
 ├── thesis-report
 │   ├── .git
@@ -115,7 +108,9 @@
 │   │   ├── hvl_logo.pdf
 │   │   ├── hvllogo_wide.png
 │   │   ├── logo.pdf
+│   ├── macros.aux
 │   ├── macros.tex
+│   ├── preamble.aux
 │   ├── preamble.tex
 │   ├── preface
 │   │   ├── abstract.aux
