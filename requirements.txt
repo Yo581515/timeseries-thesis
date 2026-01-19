@@ -2,3 +2,5 @@ PyYAML
 pymongo
 certifi
 Jinja2
+SQLAlchemy
+psycopg2-binary
