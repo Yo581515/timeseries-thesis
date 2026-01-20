@@ -158,5 +158,4 @@ find_env_var_test.py
 notes.rtf
 data/ingestion/ingest_b100000.json
 data/ingestion/ingest_b50000.json
-data/ingestion/ingest_b10000.json
 
