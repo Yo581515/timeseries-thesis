@@ -156,4 +156,7 @@ find_env_var_test.py
 
 # notes
 notes.rtf
-alias_wsl_windows.txt
+data/ingestion/ingest_b100000.json
+data/ingestion/ingest_b50000.json
+data/ingestion/ingest_b10000.json
+

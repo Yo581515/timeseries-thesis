@@ -1,0 +1,53 @@
+[
+  {
+    "source": "Node_20",
+    "source_id": "sfi_smart_ocean;demo;d1;20",
+    "location": {
+      "latitude": 59.5,
+      "longitude": 5.263733
+    },
+    "time": "2025-01-14T09:47:57.141000",
+    "observations": [
+      {
+        "source": "Aanderaa Conductivity PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;3;BATTERY_MODULE",
+        "parameter": "sea_water_electrical_conductivity",
+        "value": 5000,
+        "unit": "mV",
+        "qualityCodes": [
+          0
+        ]
+      },
+      {
+        "source": "Battery module PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_CONDUCTIVITY",
+        "parameter": "sea_water_temperature",
+        "value": 5000,
+        "unit": "degrees_C",
+        "qualityCodes": [
+          0
+        ]
+      },
+      {
+        "source": "Aanderaa Conductivity PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;3;AANDERAA_CONDUCTIVITY",
+        "parameter": "battery_voltage_mv",
+        "value": 5000,
+        "unit": "mV",
+        "qualityCodes": [
+          0
+        ]
+      },
+      {
+        "source": "Battery module PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_CONDUCTIVITY",
+        "parameter": "sea_water_temperature",
+        "value": 5000,
+        "unit": "degrees_C",
+        "qualityCodes": [
+          0
+        ]
+      }
+    ]
+  }
+]

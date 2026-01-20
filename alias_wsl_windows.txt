@@ -1,0 +1,8 @@
+echo "alias python='python3.12'" >> ~/.bashrc
+echo "alias python3='python3.12'" >> ~/.bashrc
+echo "alias pip='python3.12 -m pip'" >> ~/.bashrc
+echo "alias pip3='python3.12 -m pip'" >> ~/.bashrc
+
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+
+source ~/.bashrc

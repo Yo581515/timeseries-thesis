@@ -19,14 +19,21 @@ class MongoDBClient:
         self.MONGO_DB_USER = mongodb_config.MONGO_DB_USER
         self.MONGO_DB_PASSWORD = mongodb_config.MONGO_DB_PASSWORD
 
-        self.uri = f'mongodb+srv://{self.MONGO_DB_USER}:{self.MONGO_DB_PASSWORD}@{self.cluster}'
+        # self.uri = f'mongodb+srv://{self.MONGO_DB_USER}:{self.MONGO_DB_PASSWORD}@{self.cluster}'
+        self.uri = "mongodb://localhost:27017"
+
         
         self.client = None
 
     def connect(self) -> bool:
         try:
-            self.client = MongoClient(
+            if self.uri.startswith("mongodb://localhost") or self.uri.startswith("mongodb://127.0.0.1"):
+                self.client = MongoClient(self.uri, serverSelectionTimeoutMS=3000)
+            else:
+                self.client = MongoClient(
                 self.uri, server_api=ServerApi('1'), tlsCAFile=certifi.where())
+                
+            
             self.logger.info('Connected to MongoDB')
             return True
         except Exception as e:
