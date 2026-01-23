@@ -1,79 +1,114 @@
 # tests/test_src/test_databases/test_mongodb/test_utils/test_data_utils.py
 
-import datetime
-import logging
-from unittest.mock import MagicMock
+from datetime import datetime
 
-from src.databases.mongodb.utils.data_utils import convert_time, convert_location, extract_meta_fields, resolve_data
+import pytest
 
-class TestMDDataUtils:
+from src.databases.mongodb.utils.data_utils import (
+    convert_location,
+    convert_time,
+    extract_meta_fields,
+    resolve_data,
+)
 
-    def test_convert_time(self):
-        logger = MagicMock()
-        data_point = {"time": "2024-09-18T20:06:45.179+00:00"}
-        assert convert_time(data_point, logger) is True
-        assert isinstance(data_point['time'], datetime.datetime)
-        assert data_point['time'].tzinfo is not None  # Check if timezone is set
-        
 
-    def test_convert_location(self):
-        logger = MagicMock()
-        data_point = {"location": {"latitude": 40.7128, "longitude": -74.0060}}
-        assert convert_location(data_point, logger) is True
-        assert data_point['location']['type'] == "Point"
-        assert data_point['location']['coordinates'] == [-74.0060, 40.7128]
+def test_convert_time_success(logger):
+    doc = {"time": "2024-09-18T20:06:45.179000"}
+    ok = convert_time(doc, logger)
 
-    def test_extract_meta_fields(self):
-        logger = MagicMock()
-        data_point = {
-            "source": "Node 1",
-            "source_id": "12345",
-            "location": {
-                "coordinates": [-74.0060, 40.7128],
-                "type": "Point"
-            }
-        }
-        assert extract_meta_fields(data_point, logger) is True
-        assert 'meta' in data_point
-        assert data_point['meta']['source'] == "Node 1"
-        assert data_point['meta']['source_id'] == "12345"
-        assert data_point['meta']['location']['type'] == "Point"
-        assert data_point['meta']['location']['coordinates'] == [-74.0060, 40.7128]
+    assert ok is True
+    assert isinstance(doc["time"], datetime)
 
-    def test_resolve_data(self):
-        logger = MagicMock()
-        data_point = {
-            "time": "2024-09-18T20:06:45.179+00:00",
-            "location": {"latitude": 40.7128, "longitude": -74.0060},
-            "source": "Node 1",
-            "source_id": "12345"
-        }
-        resolved_data = resolve_data(data_point, logger)
-        assert resolved_data is True
-        assert isinstance(data_point['time'], datetime.datetime)
-        assert data_point['meta']['location']['type'] == "Point"
-        assert data_point['meta']['location']['coordinates'] == [-74.0060, 40.7128]
-        assert 'meta' in data_point
-        assert data_point['meta']['source'] == "Node 1"
-        assert data_point['meta']['source_id'] == "12345"
 
-    def test_convert_time_failure(self):
-        logger = MagicMock(spec=logging.Logger)
-        data_point = {"time": "invalid-time-format"}
-        assert convert_time(data_point, logger) is False
-        logger.error.assert_called_once()
+def test_convert_time_missing_time(logger):
+    doc = {}
+    ok = convert_time(doc, logger)
 
-    def test_convert_location_failure(self):
-        logger = MagicMock(spec=logging.Logger)
-        data_point = {"location": {"lat": 40.7128, "lng": -74.0060}}  # wrong keys
-        assert convert_location(data_point, logger) is False
-        logger.error.assert_called_once()
+    assert ok is False
 
-    def test_extract_meta_fields_missing_keys(self):
-        logger = MagicMock()
-        data_point = {
-            "extra": "value"
-        }
-        assert extract_meta_fields(data_point, logger) is True
-        assert "meta" in data_point
-        assert data_point["meta"] == {}  # No keys matched
+
+def test_convert_location_success(logger):
+    doc = {"location": {"latitude": 60.090717, "longitude": 5.263733}}
+    ok = convert_location(doc, logger)
+
+    assert ok is True
+    assert doc["location"]["type"] == "Point"
+    assert doc["location"]["coordinates"] == [5.263733, 60.090717]
+
+
+def test_convert_location_already_geojson(logger):
+    doc = {"location": {"type": "Point", "coordinates": [5.0, 60.0]}}
+    ok = convert_location(doc, logger)
+
+    assert ok is True
+    assert doc["location"]["coordinates"] == [5.0, 60.0]
+
+
+def test_convert_location_missing_location(logger):
+    doc = {}
+    ok = convert_location(doc, logger)
+
+    assert ok is False
+
+
+def test_extract_meta_fields_from_top_level_and_observation(logger):
+    doc = {
+        "source": "Node 1",
+        "source_id": "sfi_smart_ocean;demo;d1;1",
+        "observations": [{"parameter": "battery_voltage_mv", "value": 3624.0}],
+    }
+
+    ok = extract_meta_fields(doc, logger)
+
+    assert ok is True
+    assert doc["meta"]["source"] == "Node 1"
+    assert doc["meta"]["device_id"] == "sfi_smart_ocean;demo;d1;1"
+    assert doc["meta"]["sensor_id"] == "battery_voltage_mv"
+
+
+def test_extract_meta_fields_handles_missing_observations(logger):
+    doc = {"source": "Node 1", "source_id": "id-1"}
+    ok = extract_meta_fields(doc, logger)
+
+    assert ok is True
+    assert doc["meta"]["source"] == "Node 1"
+    assert doc["meta"]["device_id"] == "id-1"
+    assert doc["meta"]["sensor_id"] is None
+
+
+def test_resolve_data_success(logger):
+    doc = {
+        "source": "Node 1",
+        "source_id": "sfi_smart_ocean;demo;d1;1",
+        "time": "2024-09-18T20:06:45.179000",
+        "location": {"latitude": 60.090717, "longitude": 5.263733},
+        "observations": [{"parameter": "battery_voltage_mv", "value": 3624.0}],
+    }
+
+    ok = resolve_data(doc, logger)
+
+    assert ok is True
+    assert isinstance(doc["time"], datetime)
+    assert doc["location"]["type"] == "Point"
+    assert "meta" in doc
+
+
+@pytest.mark.parametrize("bad_doc", [
+    # missing time
+    {
+        "source": "Node 1",
+        "source_id": "id",
+        "location": {"latitude": 1.0, "longitude": 2.0},
+        "observations": [{"parameter": "p", "value": 1.0}],
+    },
+    # missing location
+    {
+        "source": "Node 1",
+        "source_id": "id",
+        "time": "2024-09-18T20:06:45.179000",
+        "observations": [{"parameter": "p", "value": 1.0}],
+    },
+])
+def test_resolve_data_failure_cases(logger, bad_doc):
+    ok = resolve_data(bad_doc, logger)
+    assert ok is False

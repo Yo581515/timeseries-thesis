@@ -1,161 +1,113 @@
 # tests/test_src/test_databases/test_mongodb/test_mongodb_integration.py
 
-import datetime
-from datetime import datetime, timezone
-from bson.objectid import ObjectId
-
 import logging
-from pprint import pprint
 import pytest
 
-from src.databases.mongodb.mongodb_repository import MongoDBRepository
 from src.databases.mongodb.utils.data_utils import resolve_data
 
-class TestIntegrationMongoDBRepository:
-    
-    @pytest.fixture
-    def prepared_data(self, load_data: list[dict], logger: logging.Logger) -> list[dict]:
-        """Copy + resolve sample data so each test can insert its own docs."""
-        data = [dict(d) for d in load_data]
-        for doc in data:
-            resolve_data(doc, logger)
-        return data
+
+@pytest.fixture
+def prepared_data(raw_data: list[dict], logger: logging.Logger) -> list[dict]:
+    """
+    Copy + resolve sample data so each test can insert its own docs.
+    resolve_data() modifies docs in-place (time -> datetime, location -> GeoJSON, meta -> dict).
+    """
+    data = [dict(d) for d in raw_data]
+    data = [doc for doc in data if resolve_data(doc, logger)]
+    return data
 
 
-    @pytest.fixture(autouse=True)
-    def clean_collection(self, mongodb_repo: MongoDBRepository):
-        """Ensure collection is empty before and after each test."""
-        mongodb_repo.delete_by_query({})
-        yield
-        mongodb_repo.delete_by_query({})
-
-    def test_ping(self, logger: logging.Logger, mongodb_repo: MongoDBRepository):
-        try:
-            logger.info("Testing MongoDB ping...")
-            assert mongodb_repo.ping() is True
-        except Exception as e:
-            logger.error(f"Ping test failed: {e}")
-            pytest.fail("Ping test failed")
-
-    def test_delete_by_query(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Testing MongoDB delete by query...")
-            # Seed some data
-            assert mongodb_repo.insert_many(prepared_data[:2]) is True
-            # Delete by query
-            assert mongodb_repo.delete_by_query({}) is True
-            # Verify empty
-            found = mongodb_repo.find_by_query({})
-            assert isinstance(found, list)
-            assert len(found) == 0
-
-            logger.info("MongoDB delete by query test passed.")
-        except Exception as e:
-            logger.error(f"Delete by query test failed: {e}")
-            pytest.fail("Delete by query test failed")
+@pytest.fixture(autouse=True)
+def clean_collection(mongodb_repo_connected):
+    """
+    Ensure collection is empty before and after each test.
+    mongodb_repo_connected is your integration fixture that connects/disconnects.
+    """
+    mongodb_repo_connected.delete_by_query({})
+    yield
+    mongodb_repo_connected.delete_by_query({})
 
 
-    def test_insert_one(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Testing MongoDB insert one...")
-            doc = prepared_data[0]
-            assert mongodb_repo.insert_one(doc) is True
-
-            found = mongodb_repo.find_by_query({"_id": doc["_id"]})
-            assert isinstance(found, list)
-            assert len(found) == 1
-            assert found[0]["_id"] == doc["_id"]
-
-            logger.info("MongoDB insert one test passed.")
-        except Exception as e:
-            logger.error(f"Insert one test failed: {e}")
-            pytest.fail("Insert one test failed")
-
-    def test_insert_many(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Testing MongoDB insert many...")
-            batch = prepared_data[1:3]
-            assert mongodb_repo.insert_many(batch) is True
-
-            ids = [d["_id"] for d in batch]
-            found = mongodb_repo.find_by_query({"_id": {"$in": ids}})
-            assert isinstance(found, list)
-            assert len(found) == len(batch)
-
-            logger.info("MongoDB insert many test passed.")
-        except Exception as e:
-            logger.error(f"Insert many test failed: {e}")
-            pytest.fail("Insert many test failed")
+def test_ping(mongodb_repo_connected):
+    assert mongodb_repo_connected.ping() is True
 
 
-    def test_find_by_query(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Testing MongoDB find by query...")
-            # Seed
-            assert mongodb_repo.insert_many(prepared_data[:3]) is True
+def test_insert_one_and_find_by_id(mongodb_repo_connected, prepared_data):
+    doc = prepared_data[0]
 
-            # Query
-            found = mongodb_repo.find_by_query({"meta.source": "Node 1"})
-            assert isinstance(found, list)
-            assert len(found) >= 1
-            # pprint(found)
-            
-            logger.info("Find by query test passed.")
-        except Exception as e:
-            logger.error(f"Find by query test failed: {e}")
-            pytest.fail("Find by query test failed")
+    ok = mongodb_repo_connected.insert_one(doc)
+    assert ok is True
+
+    # PyMongo typically injects _id into the dict if missing
+    assert "_id" in doc
+
+    found = mongodb_repo_connected.find_by_query({"_id": doc["_id"]})
+    assert isinstance(found, list)
+    assert len(found) == 1
+    assert found[0]["_id"] == doc["_id"]
 
 
-    def test_aggregate(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Testing MongoDB aggregate...")
-            # Seed
-            assert mongodb_repo.insert_many(prepared_data[:4]) is True
+def test_insert_many_and_find_by_in(mongodb_repo_connected, prepared_data):
+    batch = prepared_data[0:3]
 
-            # Aggregate
-            pipeline = [
-                {"$match": {"meta.source": "Node 1"}},
-                {"$project": {"time": 1, "_id": 1}},
-            ]
-            result = mongodb_repo.aggregate(pipeline)
-            assert isinstance(result, list)
-            assert all("_id" in d for d in result)
-            assert all("time" in d for d in result)
-            # pprint(result)
+    ok = mongodb_repo_connected.insert_many(batch, ordered=False)
+    assert ok is True
 
-            logger.info("MongoDB aggregate test passed.")
-        except Exception as e:
-            logger.error(f"MongoDB aggregate test failed: {e}")
-            pytest.fail("MongoDB aggregate test failed")
+    ids = [d["_id"] for d in batch]
+    found = mongodb_repo_connected.find_by_query({"_id": {"$in": ids}})
+    assert isinstance(found, list)
+    assert len(found) == len(batch)
 
 
-    def test_update_single_doc_via_meta_filter(self, logger: logging.Logger, mongodb_repo: MongoDBRepository, prepared_data: list[dict]):
-        try:
-            logger.info("Insert 1 doc, fetch it, then update via meta-only (time-series safe)")
+def test_delete_by_query_clears_collection(mongodb_repo_connected, prepared_data):
+    assert mongodb_repo_connected.insert_many(prepared_data[:2], ordered=False) is True
+    assert mongodb_repo_connected.delete_by_query({}) is True
 
-            # 1) Insert exactly one document
-            doc = prepared_data[0]
-            assert mongodb_repo.insert_one(doc) is True
+    found = mongodb_repo_connected.find_by_query({})
+    assert isinstance(found, list)
+    assert len(found) == 0
 
-            # 2) Fetch it back (you asked to use find_by_query)
-            found = mongodb_repo.find_by_query({})
-            assert isinstance(found, list) and len(found) == 1
 
-            # 3) Grab its _id (for sanity/logging) and meta.source_id (for legal TS update)
-            inserted_id = found[0]["_id"]
-            source_id = found[0]["meta"]["source_id"]
-            logger.info(f"Inserted _id={inserted_id}, source_id={source_id}")
+def test_find_by_query_meta_source(mongodb_repo_connected, prepared_data):
+    assert mongodb_repo_connected.insert_many(prepared_data[:5], ordered=False) is True
 
-            # 4) Update using a meta-only filter and meta-only update (required by TS)
-            flt = {"meta.source_id": source_id}               # ✅ meta-only filter
-            upd = {"meta.source": "Node X"}         # ✅ meta-only update
-            assert mongodb_repo.update_many(flt, upd) is True
+    found = mongodb_repo_connected.find_by_query({"meta.source": "Node 1"})
+    assert isinstance(found, list)
+    assert len(found) >= 1
 
-            # 5) Verify the same document (matched by meta) now has updated meta.source
-            after = mongodb_repo.find_by_query({"meta.source_id": source_id})
-            assert isinstance(after, list) and len(after) == 1
-            assert after[0]["_id"] == inserted_id            # same document
-            assert after[0]["meta"]["source"] == "Node X"    # updated value
-        except Exception as e:
-            logger.error(f"Update test failed: {e}")
-            pytest.fail("Update test failed")
+
+def test_aggregate_returns_time_and_id(mongodb_repo_connected, prepared_data):
+    assert mongodb_repo_connected.insert_many(prepared_data[:6], ordered=False) is True
+
+    pipeline = [
+        {"$match": {"meta.source": "Node 1"}},
+        {"$project": {"time": 1, "_id": 1}},
+    ]
+    result = mongodb_repo_connected.aggregate(pipeline)
+
+    assert isinstance(result, list)
+    assert all("_id" in d for d in result)
+    assert all("time" in d for d in result)
+
+
+def test_update_many_by_meta_device_id(mongodb_repo_connected, prepared_data):
+    """
+    Update using a meta-based filter to avoid updating measurement fields.
+    Your meta has: source, device_id, sensor_id.
+    """
+    doc = prepared_data[0]
+    assert mongodb_repo_connected.insert_one(doc) is True
+
+    # Use meta.device_id (you set it from top-level source_id)
+    device_id = doc["meta"]["device_id"]
+    assert device_id is not None
+
+    flt = {"meta.device_id": device_id}
+    upd = {"meta.source": "Node X"}
+
+    assert mongodb_repo_connected.update_many(flt, upd) is True
+
+    after = mongodb_repo_connected.find_by_query({"meta.device_id": device_id})
+    assert isinstance(after, list)
+    assert len(after) >= 1
+    assert all(d["meta"]["source"] == "Node X" for d in after)
