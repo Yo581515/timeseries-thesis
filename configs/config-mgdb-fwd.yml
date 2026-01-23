@@ -4,6 +4,7 @@ mongodb:
   MONGO_DB_CLUSTER: "{{ env_var('MONGO_DB_CLUSTER')}}"
   MONGODB_DATABASE_NAME: "{{ env_var('MONGODB_TIMESERIES_DATABASE_NAME')}}"
   MONGODB_COLLECTION_NAME: "{{ env_var('MONGODB_TIMESERIES_COLLECTION_NAME')}}"
+  MONGO_MODE: "{{ env_var('MONGO_MODE')}}"
 
 general:
   data_file: "./data/sample_data.json"

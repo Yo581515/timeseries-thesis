@@ -5,12 +5,10 @@ from src.common.logger import get_logger
 from src.common.data_loader import load_json_data
 
 class TestCommon:
-    # def test_load_config(self):
-    #     config_path = "tests/configs/config-test-mgdb-fwd.yml"
-    #     config = load_config(config_path)
-    #     assert isinstance(config, dict), "Config should be a dictionary"
-    #     assert "mongodb" in config, "Config should contain 'mongodb' key"
-    #     assert "general" in config, "Config should contain 'general' key"
+    def test_load_config(self):
+        config_path = "tests/configs/config-test-mgdb-fwd.yml"
+        config = load_config(config_path)
+        assert isinstance(config, dict), "Config should be a dictionary"
         
         
     def test_load_json_data(self):

@@ -1,3 +1,0 @@
-batch inserts
-bulk reads
-complex queries
