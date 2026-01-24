@@ -4,8 +4,9 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
-def _make_repo_with_mocked_collection(mongodb_repo):
+def _make_repo_with_mocked_collection(mongodb_repo : MongoDBRepository) -> MongoDBRepository:
     """
     mongodb_repo fixture returns a disconnected repo object.
     We inject a fake cached collection to unit test CRUD without a real DB.

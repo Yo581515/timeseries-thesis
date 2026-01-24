@@ -8,7 +8,7 @@ import pytest
 from src.common.config import load_config
 from src.common.data_loader import load_json_data
 from src.common.logger import get_logger
-from src.databases.mongodb.config import get_mongodb_config
+from src.databases.mongodb.config import MongoDBConfig, get_mongodb_config
 from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
 
@@ -24,7 +24,7 @@ def logger(config) -> logging.Logger:
 
 
 @pytest.fixture(scope="session")
-def mongodb_config(config):
+def mongodb_config(config) -> dict:
     return get_mongodb_config(config["mongodb"])
 
 
@@ -34,7 +34,7 @@ def raw_data(config) -> list[dict]:
 
 
 @pytest.fixture(scope="function")
-def mongodb_repo(mongodb_config, logger) -> MongoDBRepository:
+def mongodb_repo(mongodb_config : MongoDBConfig , logger: logging.Logger) -> MongoDBRepository:
     """
     Unit-test friendly repo fixture (does NOT connect).
     Use this in tests that mock repo.client / repo.collection.
@@ -43,7 +43,7 @@ def mongodb_repo(mongodb_config, logger) -> MongoDBRepository:
 
 
 @pytest.fixture(scope="function")
-def mongodb_repo_connected(mongodb_repo: MongoDBRepository) :
+def mongodb_repo_connected(mongodb_repo: MongoDBRepository) -> MongoDBRepository:
     """
     Integration-test fixture (connects to a real MongoDB).
     Skips automatically unless you set RUN_MONGO_INTEGRATION_TESTS=1.
@@ -57,4 +57,8 @@ def mongodb_repo_connected(mongodb_repo: MongoDBRepository) :
     # Clean slate per test
     mongodb_repo.delete_by_query({})
 
-    yield  mongodb_repo
+    try:
+        yield mongodb_repo
+    finally:
+        # mongodb_repo.delete_by_query({})
+        mongodb_repo.disconnect()

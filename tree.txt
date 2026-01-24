@@ -44,8 +44,6 @@
 │   │   ├── benchmark_runner.py
 │   │   ├── metrics.py
 │   │   ├── timer.py
-│   ├── cloud_logger
-│   │   ├── sql_uploader.py
 │   ├── common
 │   │   ├── __pycache__
 │   │   ├── config.py
@@ -95,18 +93,13 @@
 │   │   │   ├── test_mongodb
 │   │   │   │   ├── __pycache__
 │   │   │   │   ├── conftest.py
-│   │   │   │   ├── test_client.py
+│   │   │   │   ├── test_config_unit.py
 │   │   │   │   ├── test_mongodb_integration.py
-│   │   │   │   ├── test_operations
-│   │   │   │   │   ├── __pycache__
-│   │   │   │   │   ├── test_delete.py
-│   │   │   │   │   ├── test_fetch.py
-│   │   │   │   │   ├── test_insert.py
-│   │   │   │   │   ├── test_update.py
-│   │   │   │   ├── test_repository.py
+│   │   │   │   ├── test_repository_unit.py
 │   │   │   │   ├── test_utils
 │   │   │   │   │   ├── __pycache__
 │   │   │   │   │   ├── test_data_utils.py
+│   │   │   ├── test_postgres
 ├── thesis-report
 │   ├── .git
 │   ├── .gitignore

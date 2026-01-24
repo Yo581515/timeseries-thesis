@@ -25,15 +25,13 @@ class MongoDBConfig:
 
 def get_mongodb_config(config_dict: dict) -> MongoDBConfig:
     try:
-        mode = config_dict.get("MONGO_MODE", "local")
-
         return MongoDBConfig(
             username=config_dict["MONGO_DB_USER"],
             password=config_dict["MONGO_DB_PASSWORD"],
             cluster=config_dict["MONGO_DB_CLUSTER"],
             database=config_dict["MONGODB_DATABASE_NAME"],
             collection=config_dict["MONGODB_COLLECTION_NAME"],
-            mode=mode,
+            mode=config_dict["MONGO_MODE"] if "MONGO_MODE" in config_dict else "local",
         )
     except KeyError as e:
         raise MongoDBConfigurationException(f"Missing config key: {e}")

@@ -6,6 +6,6 @@ export PYTHONPATH=$(pwd)
 nano ~/.bashrc
 source ~/.bashrc
 
-# windows
+# windows gitbash
 export PYTHONPATH=$(pwd)
 export $(cat .env | xargs)

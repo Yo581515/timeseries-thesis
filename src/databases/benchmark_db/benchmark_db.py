@@ -42,5 +42,5 @@ if __name__ == "__main__":
             success=True,
         )
         bm_db.insert(entry)
-
+        # bm_db.clear_table()
         bm_db.disconnect()

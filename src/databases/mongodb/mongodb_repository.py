@@ -1,5 +1,8 @@
 # src/databases/mongodb/mongodb_repository.py
 
+import logging
+
+from src.databases.mongodb.config import MongoDBConfig
 from src.databases.mongodb.client import MongoDBClient
 
 
@@ -10,7 +13,7 @@ class MongoDBRepository(MongoDBClient):
     inside the benchmark loop to minimize Python overhead in timed sections.
     """
 
-    def __init__(self, mongodb_config, logger):
+    def __init__(self, mongodb_config : MongoDBConfig, logger: logging.Logger):
         super().__init__(mongodb_config, logger)
         self.db = None
         self.collection = None
