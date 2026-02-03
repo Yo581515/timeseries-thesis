@@ -16,31 +16,33 @@ from src.validators.json_validator import is_obj_valid_json
 if __name__ == "__main__":
     config_file_path = "./configs/config-mgdb-fwd.yml"
     config = load_config(config_file_path)
+    
+    pprint(config)
 
     logger = get_logger("test_mongodb.py", config["general"]["log_file"])
 
     mongodb_config = get_mongodb_config(config["mongodb"])
+    print(mongodb_config)
     repo = MongoDBRepository(mongodb_config, logger)
 
-    data = load_json_data(config["general"]["data_file"])
-    logger.info("Loaded %d documents", len(data))
+    data_file = load_json_data(config["general"]["data_file"])
+    logger.info("Loaded %d documents", len(data_file))
 
 
-    print(is_obj_valid_json(data))
+    print(is_obj_valid_json(data_file))
     print()
 
     # optional cleanup/formatting
-    data = [doc for doc in data if resolve_data(doc, logger)]
+    data = [doc for doc in data_file if resolve_data(doc, logger)]
     
 
 
-    if not repo.connect_and_cache():
-            raise SystemExit("MongoDB connection failed.")
+    print(repo.connect_and_cache())
 
     try:
         repo.ping()
 
-        # reset collection for test
+        # # reset collection for test
         repo.delete_by_query({})
 
         # insert 3 docs

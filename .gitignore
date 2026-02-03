@@ -158,3 +158,6 @@ find_env_var_test.py
 notes.rtf
 data/ingestion/ingest_b100000.json
 
+.env.containers
+.env
+.env*

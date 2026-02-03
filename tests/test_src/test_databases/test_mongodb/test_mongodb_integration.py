@@ -4,6 +4,7 @@ import logging
 import pytest
 
 from src.databases.mongodb.utils.data_utils import resolve_data
+from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
 
 @pytest.fixture
@@ -18,7 +19,7 @@ def prepared_data(raw_data: list[dict], logger: logging.Logger) -> list[dict]:
 
 
 @pytest.fixture(autouse=True)
-def clean_collection(mongodb_repo_connected):
+def clean_collection(mongodb_repo_connected: MongoDBRepository):
     """
     Ensure collection is empty before and after each test.
     mongodb_repo_connected is your integration fixture that connects/disconnects.
@@ -28,11 +29,11 @@ def clean_collection(mongodb_repo_connected):
     mongodb_repo_connected.delete_by_query({})
 
 
-def test_ping(mongodb_repo_connected):
+def test_ping(mongodb_repo_connected: MongoDBRepository):
     assert mongodb_repo_connected.ping() is True
 
 
-def test_insert_one_and_find_by_id(mongodb_repo_connected, prepared_data):
+def test_insert_one_and_find_by_id(mongodb_repo_connected: MongoDBRepository, prepared_data):
     doc = prepared_data[0]
 
     ok = mongodb_repo_connected.insert_one(doc)
@@ -47,7 +48,7 @@ def test_insert_one_and_find_by_id(mongodb_repo_connected, prepared_data):
     assert found[0]["_id"] == doc["_id"]
 
 
-def test_insert_many_and_find_by_in(mongodb_repo_connected, prepared_data):
+def test_insert_many_and_find_by_in(mongodb_repo_connected: MongoDBRepository, prepared_data):
     batch = prepared_data[0:3]
 
     ok = mongodb_repo_connected.insert_many(batch, ordered=False)
@@ -59,7 +60,7 @@ def test_insert_many_and_find_by_in(mongodb_repo_connected, prepared_data):
     assert len(found) == len(batch)
 
 
-def test_delete_by_query_clears_collection(mongodb_repo_connected, prepared_data):
+def test_delete_by_query_clears_collection(mongodb_repo_connected: MongoDBRepository, prepared_data):
     assert mongodb_repo_connected.insert_many(prepared_data[:2], ordered=False) is True
     assert mongodb_repo_connected.delete_by_query({}) is True
 
@@ -68,7 +69,7 @@ def test_delete_by_query_clears_collection(mongodb_repo_connected, prepared_data
     assert len(found) == 0
 
 
-def test_find_by_query_meta_source(mongodb_repo_connected, prepared_data):
+def test_find_by_query_meta_source(mongodb_repo_connected: MongoDBRepository, prepared_data):
     assert mongodb_repo_connected.insert_many(prepared_data[:5], ordered=False) is True
 
     found = mongodb_repo_connected.find_by_query({"meta.source": "Node 1"})
@@ -76,7 +77,7 @@ def test_find_by_query_meta_source(mongodb_repo_connected, prepared_data):
     assert len(found) >= 1
 
 
-def test_aggregate_returns_time_and_id(mongodb_repo_connected, prepared_data):
+def test_aggregate_returns_time_and_id(mongodb_repo_connected: MongoDBRepository, prepared_data):
     assert mongodb_repo_connected.insert_many(prepared_data[:6], ordered=False) is True
 
     pipeline = [
@@ -90,7 +91,7 @@ def test_aggregate_returns_time_and_id(mongodb_repo_connected, prepared_data):
     assert all("time" in d for d in result)
 
 
-def test_update_many_by_meta_device_id(mongodb_repo_connected, prepared_data):
+def test_update_many_by_meta_device_id(mongodb_repo_connected: MongoDBRepository, prepared_data):
     """
     Update using a meta-based filter to avoid updating measurement fields.
     Your meta has: source, device_id, sensor_id.

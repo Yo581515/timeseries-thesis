@@ -14,11 +14,20 @@ jobs:
     env:
       MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
       MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
+
       MONGO_DB_CLUSTER: ${{ secrets.MONGO_DB_CLUSTER }}
+
+      MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
+      MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
+
       MONGODB_TIMESERIES_DATABASE_NAME: ${{ secrets.MONGODB_TIMESERIES_DATABASE_NAME }}
       MONGODB_TIMESERIES_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_COLLECTION_NAME }}
+
       MONGODB_TIMESERIES_TEST_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_TEST_COLLECTION_NAME }}
+
       MONGO_MODE: ${{ secrets.MONGO_MODE }}
+
+      RUN_MONGO_INTEGRATION_TESTS: 0
 
     runs-on: ubuntu-latest
     steps:
@@ -72,16 +81,55 @@ jobs:
       run: |
         pytest -sv tests/test_src/test_databases/test_mongodb/test_repository_unit.py
         
+
+
+
+
+
+
+
+
+
+
+
+
+
   mongodb-integration-tests:
+
+
 
     env:
         MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
         MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
+
         MONGO_DB_CLUSTER: ${{ secrets.MONGO_DB_CLUSTER }}
+
+        MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
+        MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
+
         MONGODB_TIMESERIES_DATABASE_NAME: ${{ secrets.MONGODB_TIMESERIES_DATABASE_NAME }}
         MONGODB_TIMESERIES_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_COLLECTION_NAME }}
         MONGODB_TIMESERIES_TEST_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_TEST_COLLECTION_NAME }}
+
         MONGO_MODE: ${{ secrets.MONGO_MODE }}
+
+        RUN_MONGO_INTEGRATION_TESTS: 1
+
+    
+    services:
+      mongodb:
+        image: mongo:7
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ env.MONGO_DB_USER }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ env.MONGO_DB_PASSWORD }}
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --quiet --username ${{ env.MONGO_DB_USER }} --password ${{ env.MONGO_DB_PASSWORD }} --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=20
+          -v ${{ github.workspace }}/src/databases/mongodb/mongo-init:/docker-entrypoint-initdb.d:ro
 
     runs-on: ubuntu-latest
     steps:

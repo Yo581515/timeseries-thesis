@@ -8,4 +8,12 @@ source ~/.bashrc
 
 # windows gitbash
 export PYTHONPATH=$(pwd)
-export $(cat .env | xargs)
+
+set -a
+source .env
+set +a
+
+set -a
+source .env.mongodb
+set +a
+
