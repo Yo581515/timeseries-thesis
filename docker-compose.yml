@@ -9,7 +9,7 @@ services:
       - "27067:27017"
     volumes:
       - mongo_data:/data/db
-      - ./src/databases/mongodb/mongo-init:/docker-entrypoint-initdb.d:ro
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
 
   # postgres: 
   #   image: timescale/timescaledb:latest-pg16 
