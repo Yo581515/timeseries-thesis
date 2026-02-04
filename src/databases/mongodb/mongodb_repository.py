@@ -22,12 +22,11 @@ class MongoDBRepository(MongoDBClient):
     # Connection + caching
     # -----------------------
     def connect_and_cache(self) -> bool:
-        print(self._build_uri())
         """
         Connect and cache db/collection objects for fast use in benchmarks.
         """
         if not self.connect():
-            print("Failed to connect")
+            self.logger.error("connect_and_cache(): connect() failed")
             return False
 
         self.db = self.client[self.database_name]
@@ -83,8 +82,6 @@ class MongoDBRepository(MongoDBClient):
             self.logger.error("insert_one(): empty doc")
             return False
 
-
-        print(self.get_collection())
         col = collection if collection is not None else self.collection
         if col is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")

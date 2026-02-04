@@ -59,7 +59,6 @@ class MongoDBClient:
                     serverSelectionTimeoutMS=5000,
                 )
             elif self.mongo_mode in ["localhost", "container"]:
-                print("Connecting in", self.mongo_mode, "mode") 
                 self.client = MongoClient(uri, serverSelectionTimeoutMS=3000)
             else:
                 raise ValueError(f"Invalid mongo_mode: {self.mongo_mode!r}")

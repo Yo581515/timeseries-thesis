@@ -1,14 +1,14 @@
 # src/databases/mongodb/utils/data_utils.py
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def convert_time(data_point: dict, logger: logging.Logger) -> bool:
     """Convert 'time' field to datetime."""
     try:
         if "time" in data_point and data_point["time"]:
-            data_point["time"] = datetime.fromisoformat(data_point["time"])
+            data_point["time"] = datetime.fromisoformat(data_point["time"]).replace(tzinfo=timezone.utc)
         else:
             logger.error("[convert_time] Missing 'time'")
             return False
@@ -87,3 +87,25 @@ def resolve_data(data_point: dict, logger: logging.Logger) -> bool:
     if not extract_meta_fields(data_point, logger):
         return False
     return True
+
+
+
+
+def make_strftime_from_utc(d: dict) -> dict:
+    if "time" not in d or d["time"] is None:
+        breakpoint()
+
+    dt = d["time"]
+
+    # Enforce UTC
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+
+    d["time"] = dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+    return d
+
+
+
+
