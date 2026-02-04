@@ -2,6 +2,10 @@
 
 import logging
 from datetime import datetime, timezone
+import json
+import json
+import logging
+from pathlib import Path
 
 
 def convert_time(data_point: dict, logger: logging.Logger) -> bool:
@@ -109,3 +113,47 @@ def make_strftime_from_utc(d: dict) -> dict:
 
 
 
+
+def load_mongodb_json(file_path: str, logger: logging.Logger) -> list[dict]:
+    """
+    Load a MongoDB dataset JSON file.
+
+    The file is expected to contain:
+      - a list of documents (most common), OR
+      - a single document (dict)
+
+    Returns:
+      List[dict]: list of MongoDB documents
+
+    Raises:
+      FileNotFoundError if file does not exist
+    """
+    path = Path(file_path)
+
+    if not path.exists():
+        raise FileNotFoundError(f"MongoDB data file not found: {path.resolve()}")
+
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        if isinstance(data, list):
+            logger.info(f"Loaded {len(data)} documents from {path.name}")
+            return data
+
+        if isinstance(data, dict):
+            logger.info(f"Loaded single document from {path.name}")
+            return [data]
+
+        logger.error(
+            f"Unexpected JSON root type in {path.name}: {type(data)}"
+        )
+        return []
+
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in {path.name}: {e}")
+        return []
+
+    except Exception as e:
+        logger.error(f"Failed to load {path.name}: {e}")
+        return []

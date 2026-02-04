@@ -1,2 +1,11 @@
 pytest
 flake8
+
+notebook 
+ipykernel
+
+matplotlib
+pandas
+numpy
+
+dotenv

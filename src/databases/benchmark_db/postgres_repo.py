@@ -88,9 +88,21 @@ class PostgresRepo(PostgresClient):
         return deleted
     
     
-    def get_all(self):
+    def get_all(self) -> List[T]:
         with self.session_scope() as db:
             try:
                 return db.query(self.model).all()
             finally:
                 db.close()
+                
+                
+    
+    def count(self) -> int:
+        model = self._require_model()
+        self.logger.debug("count(): counting records in %s", model.__name__)
+        with self.session_scope() as db:
+            count = db.query(model).count()
+        self.logger.info("count(): found %d records in %s", count, model.__name__)
+        return count
+    
+    
