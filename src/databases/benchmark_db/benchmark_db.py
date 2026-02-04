@@ -1,6 +1,7 @@
-# src/databases/benchmark_db/bechmark_db.py
+# src/databases/benchmark_db/benchmark_db.py
 
 import logging
+from pprint import pprint
 
 from src.databases.benchmark_db.postgres_repo import PostgresRepo
 from src.databases.benchmark_db.config import PostgresBConfig
@@ -26,9 +27,11 @@ if __name__ == "__main__":
     benchmark_db_config = get_postgres_config(bmdb_config_dict["postgres"])
     bm_db = BenchmarkDB(benchmark_db_config, logger)
 
-    if bm_db.connect():
+    try:
+        bm_db.connect()
         bm_db.create_tables()  # creates Benchmark table
         bm_db.ping()
+        print("BenchmarkDB is connected and ready.")
 
         entry = Benchmark(
             benchmark_name="ingestion.insert_many.fixed_batch",
@@ -42,5 +45,16 @@ if __name__ == "__main__":
             success=True,
         )
         bm_db.insert(entry)
-        # bm_db.clear_table()
+        
+        data_points = bm_db.get_all()
+        print()
+        if  len(data_points) > 0:
+            d_p = data_points[0]
+            print(d_p)
+            print()
+                
+        bm_db.clear_table()
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+    finally:
         bm_db.disconnect()

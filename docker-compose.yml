@@ -11,6 +11,24 @@ services:
       - mongo_data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d:ro
 
+
+  benchmark_db:    
+    image: postgres:16
+    container_name: benchmark_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: benchmark_db
+    ports:
+      - "5467:5432"
+    volumes:
+      - benchmark_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   # postgres: 
   #   image: timescale/timescaledb:latest-pg16 
   #   container_name: timescaledb 
@@ -40,5 +58,6 @@ services:
 
 volumes:
   mongo_data:
+  benchmark_data:
   # pg_data:
   # influx_data:

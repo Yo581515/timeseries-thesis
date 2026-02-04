@@ -1,4 +1,4 @@
-# src/databases/mongodb/setup/test_mongodb.py
+# src/databases/mongodb/setup/insert_example.py
 
 import time
 from pprint import pprint

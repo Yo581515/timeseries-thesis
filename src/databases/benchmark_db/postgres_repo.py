@@ -86,3 +86,11 @@ class PostgresRepo(PostgresClient):
             deleted = db.query(model).delete()
         self.logger.info("clear_table(): deleted %d rows from %s", deleted, model.__name__)
         return deleted
+    
+    
+    def get_all(self):
+        with self.session_scope() as db:
+            try:
+                return db.query(self.model).all()
+            finally:
+                db.close()

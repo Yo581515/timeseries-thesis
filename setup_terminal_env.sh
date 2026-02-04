@@ -8,3 +8,9 @@ set -a
 source .env.mongodb
 set +a
 echo "env variables loaded from .env.mongodb"
+
+
+set -a
+source .env.benchmark_db
+set +a
+echo "env variables loaded from .env.benchmark_db"
