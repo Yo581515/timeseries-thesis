@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from datetime import datetime
 
 # ---- CONFIG (matches your docker-compose) ----
-usr = "root"
+usr = "mongodb_user"
 pwd = "password123"
 url = "localhost:27067"
 db = "timeseries_db"

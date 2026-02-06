@@ -14,18 +14,18 @@ class MongoDBClient:
     def __init__(self, mongodb_config : MongoDBConfig, logger: logging.Logger):
         self.logger = logger
 
-        self.username = mongodb_config.MONGO_DB_USER
-        self.password = mongodb_config.MONGO_DB_PASSWORD
+        self.username = mongodb_config.MONGODB_USER
+        self.password = mongodb_config.MONGODB_PASSWORD
         
-        self.cluster = mongodb_config.MONGO_DB_CLUSTER
+        self.cluster = mongodb_config.MONGODB_CLUSTER
         
-        self.host = mongodb_config.MONGO_DB_HOST
-        self.port = mongodb_config.MONGO_DB_PORT
+        self.host = mongodb_config.MONGODB_HOST
+        self.port = mongodb_config.MONGODB_PORT
 
         self.database_name = mongodb_config.MONGODB_DATABASE_NAME
         self.collection_name = mongodb_config.MONGODB_COLLECTION_NAME
 
-        self.mongo_mode = mongodb_config.MONGO_MODE  # localhost/mongodb | atlas
+        self.mongo_mode = mongodb_config.MONGODB_MODE  # localhost/mongodb | atlas
 
         self.client = None
         

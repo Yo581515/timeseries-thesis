@@ -76,63 +76,6 @@ except Exception as e:
 
 print(lines)    
 
-
-# 4 benchmark save
-# REPEATS = 100
-# FAIL_EVERY = 9  # every 9th iteration fails (i=0,9,18,...)
-
-# # mongodb_repo.connect()
-# # bm_db.connect()
-
-# try:
-#     docs = mongodb_format_data[1]
-#     dataset = file_names[1]
-#     n_points = len(docs)
-
-#     for i in range(REPEATS):
-#         start = time.perf_counter()
-#         success = True
-#         err_msg = None
-
-#         try:
-#             # Inject failure BEFORE insert
-#             if i % FAIL_EVERY == 0:
-#                 raise RuntimeError("Injected failure for benchmarking (every 9th run)")
-
-#             repo.insert_many(docs)
-
-#         except Exception as e:
-#             success = False
-#             err_msg = str(e)
-
-#         end = time.perf_counter()
-#         total_seconds = end - start
-#         throughput = (n_points / total_seconds) if total_seconds > 0 else 0.0
-
-#         entry = Benchmark(
-#             benchmark_name="ingestion.insert_many.fixed_batch",
-#             database_name="mongodb",
-#             dataset_name=dataset,
-#             total_points=n_points,
-#             total_seconds=total_seconds,
-#             throughput_points_per_sec=throughput,
-#             success=success,
-#         )
-
-#         # Record the benchmark result (even failed ones)
-#         bm_db.insert(entry)
-
-#         print(
-#             f"Run {i+1}/{REPEATS} | success={success} | "
-#             f"time={total_seconds:.4f}s | thr={throughput:.1f} pts/s"
-#             + (f" | err={err_msg}" if err_msg else "")
-#         )
-
-# finally:
-#     mongodb_repo.disconnect()
-#     bm_db.disconnect()
-
-
 REPEATS = 1000
 
 FAIL_EVERY = 66  # fail on run 67 

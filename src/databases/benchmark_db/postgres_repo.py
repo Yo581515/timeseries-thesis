@@ -8,20 +8,20 @@ from sqlalchemy import text, select, update as sa_update, delete as sa_delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from src.databases.benchmark_db.client import PostgresClient
-from src.databases.benchmark_db.config import PostgresBConfig
+from src.databases.benchmark_db.client import BenchmarkDBClient
+from src.databases.benchmark_db.config import BenchmarkDBConfig
 
 T = TypeVar("T")
 
 
-class PostgresRepo(PostgresClient):
+class BenchmarkDBRepo(BenchmarkDBClient):
     """
     Generic repository for SQLAlchemy models.
     Subclasses should set: model = <SQLAlchemy ORM class>
     """
     model: Optional[Type[T]] = None
 
-    def __init__(self, postgres_config: PostgresBConfig, logger: logging.Logger):
+    def __init__(self, postgres_config: BenchmarkDBConfig, logger: logging.Logger):
         super().__init__(postgres_config, logger)
 
     # ----------------------------

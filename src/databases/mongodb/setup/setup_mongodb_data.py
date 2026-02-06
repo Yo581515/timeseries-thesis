@@ -82,17 +82,17 @@ def coerce_to_docs(obj: Any) -> List[JsonDoc]:
 
 
 if __name__ == "__main__":
-    config_file_path = "./configs/config-mgdb-fwd.yml"
+    config_file_path = "./configs/config-mgdb.yml"
     config = load_config(config_file_path)
 
     logger = get_logger("setup_mongodb_data.py", config["general"]["log_file"])
-    _mongodb_config = get_mongodb_config(config["mongodb"])
+    _mongodb_config = get_mongodb_config(config["database"])
 
     # -------------------------
     # Configurable naming pieces
     # -------------------------
     entity = "data"
-    phenomenon = "observations"
+    phenomenon = "measurements"
 
     # -------------------------
     # Input/Output folders

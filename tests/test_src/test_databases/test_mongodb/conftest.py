@@ -12,7 +12,7 @@ from src.common.logger import get_logger
 from src.databases.mongodb.config import MongoDBConfig, get_mongodb_config
 from src.databases.mongodb.mongodb_repository import MongoDBRepository
 
-TEST_CONFIG_PATH = Path("tests/configs/config-test-mgdb-fwd.yml")
+TEST_CONFIG_PATH = Path("tests/configs/config-test-mgdb.yml")
 
 
 @pytest.fixture(scope="session")
@@ -27,7 +27,7 @@ def logger(config: dict) -> logging.Logger:
 
 @pytest.fixture(scope="session")
 def mongodb_config(config: dict) -> MongoDBConfig:
-    return get_mongodb_config(config["mongodb"])
+    return get_mongodb_config(config["database"])
 
 
 @pytest.fixture(scope="session")
@@ -45,10 +45,10 @@ def mongodb_repo(mongodb_config: MongoDBConfig, logger: logging.Logger) -> Mongo
 def mongodb_repo_connected(mongodb_repo: MongoDBRepository) -> MongoDBRepository:
     """
     Integration-test fixture (connects to a real MongoDB).
-    Enabled only if RUN_MONGO_INTEGRATION_TESTS=1.
+    Enabled only if RUN_MONGODB_INTEGRATION_TESTS=1.
     """
-    if os.getenv("RUN_MONGO_INTEGRATION_TESTS") != "1":
-        pytest.skip("Mongo integration tests disabled. Set RUN_MONGO_INTEGRATION_TESTS=1 to enable.")
+    if os.getenv("RUN_MONGODB_INTEGRATION_TESTS") != "1":
+        pytest.skip("Mongo integration tests disabled. Set RUN_MONGODB_INTEGRATION_TESTS=1 to enable.")
 
     if not mongodb_repo.connect_and_cache():
         pytest.skip("Could not connect to MongoDB (connect_and_cache failed).")

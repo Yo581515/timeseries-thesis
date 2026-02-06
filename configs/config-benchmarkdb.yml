@@ -1,0 +1,10 @@
+database:
+  BENCHMARKDB_USER: "{{ env_var('BENCHMARKDB_USER')}}"
+  BENCHMARKDB_PASSWORD: "{{ env_var('BENCHMARKDB_PASSWORD')}}"
+  BENCHMARKDB_DATABASE: "{{ env_var('BENCHMARKDB_DATABASE')}}"
+  BENCHMARKDB_HOST: "{{ env_var('BENCHMARKDB_HOST')}}"
+  BENCHMARKDB_PORT: "{{ env_var('BENCHMARKDB_PORT')}}"
+  BENCHMARKDB_SCHEMA: "{{ env_var('BENCHMARKDB_SCHEMA')}}"
+
+general:
+  log_file: "./logs/benchmarkdb_logs.log"

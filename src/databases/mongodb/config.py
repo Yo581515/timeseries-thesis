@@ -6,30 +6,30 @@ class MongoDBConfigurationException(Exception):
 
 class MongoDBConfig:
     def __init__(self, username, password, cluster, host, port, database, collection, mode):
-        self.MONGO_DB_USER = username
-        self.MONGO_DB_PASSWORD = password
+        self.MONGODB_USER = username
+        self.MONGODB_PASSWORD = password
         
         # for MongoDB Atlas connections
-        self.MONGO_DB_CLUSTER = cluster
+        self.MONGODB_CLUSTER = cluster
         
         # for local/container connections
-        self.MONGO_DB_HOST = host
-        self.MONGO_DB_PORT = port
+        self.MONGODB_HOST = host
+        self.MONGODB_PORT = port
         
         self.MONGODB_DATABASE_NAME = database
         self.MONGODB_COLLECTION_NAME = collection
         
-        self.MONGO_MODE = mode  # "local" | "atlas"
+        self.MONGODB_MODE = mode  # "local" | "atlas"
 
     def __str__(self):
         return (
             "MongoDB Configuration:\n"
-            f"Mode: {self.MONGO_MODE}\n"
+            f"Mode: {self.MONGODB_MODE}\n"
             
-            f"Cluster: {self.MONGO_DB_CLUSTER}\n"
+            f"Cluster: {self.MONGODB_CLUSTER}\n"
             
-            f"Host: {self.MONGO_DB_HOST}\n"
-            f"Port: {self.MONGO_DB_PORT}\n"
+            f"Host: {self.MONGODB_HOST}\n"
+            f"Port: {self.MONGODB_PORT}\n"
             
             f"Database: {self.MONGODB_DATABASE_NAME}\n"
             f"Collection: {self.MONGODB_COLLECTION_NAME}\n"
@@ -39,18 +39,18 @@ class MongoDBConfig:
 def get_mongodb_config(config_dict: dict) -> MongoDBConfig:
     try:
         return MongoDBConfig(
-            username=config_dict["MONGO_DB_USER"],
-            password=config_dict["MONGO_DB_PASSWORD"],
+            username=config_dict["MONGODB_USER"],
+            password=config_dict["MONGODB_PASSWORD"],
             
-            cluster=config_dict["MONGO_DB_CLUSTER"],
+            cluster=config_dict["MONGODB_CLUSTER"],
             
-            host=config_dict["MONGO_DB_HOST"],
-            port=config_dict["MONGO_DB_PORT"],
+            host=config_dict["MONGODB_HOST"],
+            port=config_dict["MONGODB_PORT"],
             
             database=config_dict["MONGODB_DATABASE_NAME"],
             collection=config_dict["MONGODB_COLLECTION_NAME"],
             
-            mode=config_dict["MONGO_MODE"],
+            mode=config_dict["MONGODB_MODE"],
         )
     except KeyError as e:
         raise MongoDBConfigurationException(f"Missing config key: {e}")

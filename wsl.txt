@@ -1,0 +1,4 @@
+# WSL
+export PYTHONPATH=$(pwd)
+nano ~/.bashrc
+source ~/.bashrc

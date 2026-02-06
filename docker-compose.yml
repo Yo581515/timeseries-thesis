@@ -3,24 +3,38 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_USERNAME: mongodb_user
       MONGO_INITDB_ROOT_PASSWORD: password123
     ports:
       - "27067:27017"
     volumes:
       - mongo_data:/data/db
-      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+      - ./init-mongo:/docker-entrypoint-initdb.d:ro
 
+
+  timescaledb: 
+    image: timescale/timescaledb:latest-pg16 
+    container_name: timescale-db
+    environment:
+      - POSTGRES_USER=timescaledb_user
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=timescale_db
+    ports: 
+      - "5467:5432" 
+    volumes: 
+      - timescale_data:/var/lib/postgresql/data 
+      - ./init-timescaledb:/docker-entrypoint-initdb.d 
+ 
 
   benchmark_db:    
     image: postgres:16
-    container_name: benchmark_db
+    container_name: benchmarkdb_db
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: benchmarkdb_user
       POSTGRES_PASSWORD: password123
       POSTGRES_DB: benchmark_db
     ports:
-      - "5467:5432"
+      - "5468:5432"
     volumes:
       - benchmark_data:/var/lib/postgresql/data
     healthcheck:
@@ -29,17 +43,7 @@ services:
       timeout: 3s
       retries: 10
 
-  # postgres: 
-  #   image: timescale/timescaledb:latest-pg16 
-  #   container_name: timescaledb 
-  #   environment: 
-  #     - POSTGRES_USER=admin 
-  #     - POSTGRES_PASSWORD=admin123 
-  #     - POSTGRES_DB=metricsdb 
-  #   ports: 
-  #     - "5432:5432" 
-  #   volumes: 
-  #     - pg_data:/var/lib/postgresql/data 
+
  
 #   influxdb: 
 #     image: influxdb:2.7 
@@ -59,5 +63,6 @@ services:
 volumes:
   mongo_data:
   benchmark_data:
+  timescale_data:
   # pg_data:
   # influx_data:

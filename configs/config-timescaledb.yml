@@ -1,0 +1,10 @@
+database:
+  TIMESCALEDB_USER: "{{ env_var('TIMESCALEDB_USER')}}"
+  TIMESCALEDB_PASSWORD: "{{ env_var('TIMESCALEDB_PASSWORD')}}"
+  TIMESCALEDB_DATABASE: "{{ env_var('TIMESCALEDB_DATABASE')}}"
+  TIMESCALEDB_HOST: "{{ env_var('TIMESCALEDB_HOST')}}"
+  TIMESCALEDB_PORT: "{{ env_var('TIMESCALEDB_PORT')}}"
+  TIMESCALEDB_SCHEMA: "{{ env_var('TIMESCALEDB_SCHEMA')}}"
+
+general:
+  log_file: "./logs/timescale_db.log"

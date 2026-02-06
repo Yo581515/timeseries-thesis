@@ -1,37 +1,38 @@
 # src/databases/benchmark_db/config.py
 
-class PostgresBConfigurationException(Exception):
+class BenchmarkDBConfigurationException(Exception):
     pass
 
 
-class PostgresBConfig:
+class BenchmarkDBConfig:
     def __init__(self, username, password, host, port, database, schema):
-        self.POSTGRES_USER = username
-        self.POSTGRES_PASSWORD = password
-        self.POSTGRES_HOST = host
-        self.POSTGRES_PORT = port
-        self.POSTGRES_DATABASE = database
-        self.POSTGRES_SCHEMA = schema
+        self.BENCHMARKDB_USER = username
+        self.BENCHMARKDB_PASSWORD = password
+        self.BENCHMARKDB_HOST = host
+        self.BENCHMARKDB_PORT = port
+        self.BENCHMARKDB_DATABASE = database
+        self.BENCHMARKDB_SCHEMA = schema
 
     def __str__(self):
         return (
-            "PostgresB Configuration:\n"
-            f"Host: {self.POSTGRES_HOST}\n"
-            f"Port: {self.POSTGRES_PORT}\n"
-            f"Database: {self.POSTGRES_DATABASE}\n"
-            f"Schema: {self.POSTGRES_SCHEMA}\n"
+            "BenchmarkDB Configuration:\n"
+            f"Host: {self.BENCHMARKDB_HOST}\n"
+            f"Port: {self.BENCHMARKDB_PORT}\n"
+            f"Database: {self.BENCHMARKDB_DATABASE}\n"
+            f"Schema: {self.BENCHMARKDB_SCHEMA}\n"
         )
 
 
-def get_postgres_config(config_dict: dict) -> PostgresBConfig:
+def get_postgres_config(config_dict: dict) -> BenchmarkDBConfig:
+    
     try:
-        return PostgresBConfig(
-            username=config_dict["POSTGRES_USER"],
-            password=config_dict["POSTGRES_PASSWORD"],
-            host=config_dict["POSTGRES_HOST"],
-            port=config_dict["POSTGRES_PORT"],
-            database=config_dict["POSTGRES_DATABASE"],
-            schema=config_dict["POSTGRES_SCHEMA"],
+        return BenchmarkDBConfig(
+            username=config_dict["BENCHMARKDB_USER"],
+            password=config_dict["BENCHMARKDB_PASSWORD"],
+            host=config_dict["BENCHMARKDB_HOST"],
+            port=config_dict["BENCHMARKDB_PORT"],
+            database=config_dict["BENCHMARKDB_DATABASE"],
+            schema=config_dict["BENCHMARKDB_SCHEMA"],
         )
     except KeyError as e:
-        raise PostgresBConfigurationException(f"Missing config key: {e}")
+        raise BenchmarkDBConfigurationException(f"Missing config key: {e}")

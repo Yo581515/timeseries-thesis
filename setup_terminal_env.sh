@@ -14,3 +14,9 @@ set -a
 source .env.benchmark_db
 set +a
 echo "env variables loaded from .env.benchmark_db"
+
+
+set -a
+source .env.timescaledb
+set +a
+echo "env variables loaded from .env.timescaledb"

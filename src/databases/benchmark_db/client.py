@@ -5,23 +5,21 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 from src.databases.benchmark_db.base import Base
-from src.databases.benchmark_db.config import PostgresBConfig
+from src.databases.benchmark_db.config import BenchmarkDBConfig
 
 
-class PostgresClient:
-    def __init__(self, postgres_config: PostgresBConfig, logger: logging.Logger):
+class BenchmarkDBClient:
+    def __init__(self, postgres_config: BenchmarkDBConfig, logger: logging.Logger):
         self.logger = logger
 
-        self.user = postgres_config.POSTGRES_USER
-        self.password = postgres_config.POSTGRES_PASSWORD
-        self.host = postgres_config.POSTGRES_HOST
-        self.port = postgres_config.POSTGRES_PORT
-        self.database = postgres_config.POSTGRES_DATABASE
-        self.schema = postgres_config.POSTGRES_SCHEMA
+        self.user = postgres_config.BENCHMARKDB_USER
+        self.password = postgres_config.BENCHMARKDB_PASSWORD
+        self.host = postgres_config.BENCHMARKDB_HOST
+        self.port = postgres_config.BENCHMARKDB_PORT
+        self.database = postgres_config.BENCHMARKDB_DATABASE
+        self.schema = postgres_config.BENCHMARKDB_SCHEMA
 
-        self.SQLALCHEMY_DATABASE_URL = (
-            f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
-        )
+        self.url = f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
 
         self.engine = None
         self.SessionLocal = None
@@ -32,7 +30,7 @@ class PostgresClient:
 
             # Set schema as default via search_path
             self.engine = create_engine(
-                self.SQLALCHEMY_DATABASE_URL,
+                self.url,
                 connect_args={"options": f"-csearch_path={self.schema}"},
                 pool_pre_ping=True,
             )
@@ -81,3 +79,24 @@ class PostgresClient:
         except Exception as e:
             self.logger.error("Disconnection error: %s", e)
             return False
+
+
+if __name__ == "__main__":
+    from src.common.config import load_config
+    from src.common.logger import get_logger
+    from src.databases.benchmark_db.config import get_postgres_config
+
+    bmdb_config_file_path = "./configs/config-benchmark.yml"
+    bmdb_config_dict = load_config(bmdb_config_file_path)
+    logger = get_logger("client.py", bmdb_config_dict["general"]["log_file"])
+
+    benchmark_db_config = get_postgres_config(bmdb_config_dict["database"])
+    
+    print(benchmark_db_config)
+    
+    bmc = BenchmarkDBClient(benchmark_db_config, logger)
+    
+    print(bmc.connect() )
+    
+    bmc.create_tables()
+    bmc.disconnect()

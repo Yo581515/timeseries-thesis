@@ -14,14 +14,14 @@ from src.validators.json_validator import is_obj_valid_json
 
 
 if __name__ == "__main__":
-    config_file_path = "./configs/config-mgdb-fwd.yml"
+    config_file_path = "./configs/config-mgdb.yml"
     config = load_config(config_file_path)
     
     # pprint(config)
 
-    logger = get_logger("test_mongodb.py", config["general"]["log_file"])
+    logger = get_logger("insert_example.py", config["general"]["log_file"])
 
-    mongodb_config = get_mongodb_config(config["mongodb"])
+    mongodb_config = get_mongodb_config(config["database"])
     # print(mongodb_config)
     repo = MongoDBRepository(mongodb_config, logger)
 
