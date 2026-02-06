@@ -8,3 +8,4 @@ database:
 
 general:
   log_file: "./logs/timescale_db.log"
+  timescaledb_data_folder_path: "./data/timescaledb_data/"
