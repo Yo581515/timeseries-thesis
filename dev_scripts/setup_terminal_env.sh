@@ -20,3 +20,8 @@ set -a
 source .env.timescaledb
 set +a
 echo "env variables loaded from .env.timescaledb"
+
+set -a
+source .env.influxdb
+set +a
+echo "env variables loaded from .env.timescaledb"

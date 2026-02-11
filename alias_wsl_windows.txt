@@ -6,3 +6,6 @@ echo "alias pip3='python3.12 -m pip'" >> ~/.bashrc
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 
 source ~/.bashrc
+
+
+InfluxDB 2.x Essentials

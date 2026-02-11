@@ -4,9 +4,8 @@ import logging
 from contextlib import contextmanager
 from psycopg2.pool import SimpleConnectionPool
 
-from src.common.config import load_config
-from src.common.logger import get_logger
-from src.databases.timescaledb.config import TimeScaleDBConfig, get_timescaledb_config
+
+from src.databases.timescaledb.config import TimeScaleDBConfig
 
 
 class TimeScaleDBClient:
@@ -55,6 +54,10 @@ class TimeScaleDBClient:
 
 
 if __name__ == "__main__":
+    from src.common.config import load_config
+    from src.common.logger import get_logger
+    from src.databases.timescaledb.config import get_timescaledb_config
+
     timescale_config_path = "./configs/config-timescaledb.yml" 
     timescale_config = load_config(timescale_config_path) #dict
     logger = get_logger("timescaledb", timescale_config["general"]["log_file"])
