@@ -99,33 +99,33 @@ jobs:
 
 
     env:
-        MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
-        MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
+        MONGODB_USER: ${{ secrets.MONGODB_USER }}
+        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
 
-        MONGO_DB_CLUSTER: ${{ secrets.MONGO_DB_CLUSTER }}
+        MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
 
-        MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
-        MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
+        MONGODB_HOST: ${{ secrets.MONGODB_HOST }}
+        MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
 
         MONGODB_TIMESERIES_DATABASE_NAME: ${{ secrets.MONGODB_TIMESERIES_DATABASE_NAME }}
         MONGODB_TIMESERIES_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_COLLECTION_NAME }}
         MONGODB_TIMESERIES_TEST_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_TEST_COLLECTION_NAME }}
 
-        MONGO_MODE: ${{ secrets.MONGO_MODE }}
+        MONGODB_MODE: ${{ secrets.MONGODB_MODE }}
 
-        RUN_MONGO_INTEGRATION_TESTS: 1
+        RUN_MONGODB_INTEGRATION_TESTS: 1
 
     
     services:
       mongodb:
         image: mongo:7
         env:
-          MONGO_INITDB_ROOT_USERNAME: $MONGO_DB_USER
-          MONGO_INITDB_ROOT_PASSWORD: $MONGO_DB_PASSWORD
+          MONGO_INITDB_ROOT_USERNAME: $MONGODB_USER
+          MONGO_INITDB_ROOT_PASSWORD: $MONGODB_PASSWORD
         ports:
           - 27017:27017
         options: >-
-          --health-cmd="mongosh --quiet --username $MONGO_DB_USER --password $MONGO_DB_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'"
+          --health-cmd="mongosh --quiet --username $MONGODB_USER --password $MONGODB_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'"
           --health-interval=5s
           --health-timeout=3s
           --health-retries=20
