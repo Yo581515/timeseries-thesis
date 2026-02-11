@@ -55,12 +55,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
-        pip install flake8
+        pip install flake8 
 
 
 
     - name: Run flake8
       run: |
+        source .venv/bin/activate
         # stop the build if there are Python syntax errors or undefined names
         flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -73,18 +74,22 @@ jobs:
       
     - name: Run common tests
       run: |
+        source .venv/bin/activate 
         pytest -sv tests/test_src/test_common/test_common.py
 
     - name: Run MongoDB data_utils tests
       run: |
+        source .venv/bin/activate
         pytest -sv tests/test_src/test_databases/test_mongodb/test_utils/test_data_utils.py
 
     - name: Run MongoDB client tests
       run: |
+        source .venv/bin/activate
         pytest -sv tests/test_src/test_databases/test_mongodb/test_config_unit.py
 
     - name: Run MongoDB repository tests
       run: |
+        source .venv/bin/activate
         pytest -sv tests/test_src/test_databases/test_mongodb/test_repository_unit.py
         
 
