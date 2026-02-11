@@ -58,7 +58,6 @@ jobs:
         pip install flake8 
 
 
-    # comment to test cache
     - name: Run flake8
       run: |
         source .venv/bin/activate
@@ -151,23 +150,28 @@ jobs:
       with:
         python-version: "3.10"
 
-    - name: Cache pip dependencies
+    - name: Cache venv
       uses: actions/cache@v4
+      id: cache-venv
       with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt', 'requirements-dev.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt', 'requirements-dev.txt') }}
+
 
     - name: Install dependencies
+      if: steps.cache-venv.outputs.cache-hit != 'true'
       run: |
+        python -m venv .venv
+        source .venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+        pip install flake8 
 
 
     - name: Run flake8
       run: |
+        source .venv/bin/activate
         # stop the build if there are Python syntax errors or undefined names
         flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -177,6 +181,8 @@ jobs:
     - name: export PYTHONPATH
       run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
+    # cache miss on purpose
     - name: Run MongoDB integration tests
       run: |
+        source .venv/bin/activate
         pytest -sv tests/test_src/test_databases/test_mongodb/test_mongodb_integration.py
