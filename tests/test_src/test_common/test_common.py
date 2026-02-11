@@ -6,7 +6,7 @@ from src.common.data_loader import load_json_data
 
 class TestCommon:
     def test_load_config(self):
-        config_path = "tests/configs/config-test-mgdb-fwd.yml"
+        config_path = "tests/configs/config-test-mgdb.yml"
         config = load_config(config_path)
         assert isinstance(config, dict), "Config should be a dictionary"
         
