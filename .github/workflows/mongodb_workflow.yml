@@ -12,22 +12,22 @@ jobs:
 
     # envs?
     env:
-      MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
-      MONGO_DB_PASSWORD: ${{ secrets.MONGO_DB_PASSWORD }}
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
 
-      MONGO_DB_CLUSTER: ${{ secrets.MONGO_DB_CLUSTER }}
+      MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
 
-      MONGO_DB_HOST: ${{ secrets.MONGO_DB_HOST }}
-      MONGO_DB_PORT: ${{ secrets.MONGO_DB_PORT }}
+      MONGODB_HOST: ${{ secrets.MONGODB_HOST }}
+      MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
 
       MONGODB_TIMESERIES_DATABASE_NAME: ${{ secrets.MONGODB_TIMESERIES_DATABASE_NAME }}
       MONGODB_TIMESERIES_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_COLLECTION_NAME }}
 
       MONGODB_TIMESERIES_TEST_COLLECTION_NAME: ${{ secrets.MONGODB_TIMESERIES_TEST_COLLECTION_NAME }}
 
-      MONGO_MODE: ${{ secrets.MONGO_MODE }}
+      MONGODB_MODE: ${{ secrets.MONGODB_MODE }}
 
-      RUN_MONGO_INTEGRATION_TESTS: 0
+      RUN_MONGODB_INTEGRATION_TESTS: 0
 
     runs-on: ubuntu-latest
     steps:
@@ -63,7 +63,8 @@ jobs:
 
 
     - name: export PYTHONPATH
-      run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+      run: |
+        echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
       
     - name: Run common tests
       run: |
