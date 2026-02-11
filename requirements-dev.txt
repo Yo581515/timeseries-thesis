@@ -4,7 +4,6 @@ flake8
 notebook 
 ipykernel
 
-
 matplotlib
 pandas
 numpy
@@ -12,3 +11,5 @@ numpy
 dotenv
 
 pyarrow
+
+
