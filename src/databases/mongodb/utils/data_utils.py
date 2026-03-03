@@ -1,5 +1,3 @@
-# src/databases/mongodb/utils/data_utils.py
-
 import logging
 from datetime import datetime, timezone
 import json
