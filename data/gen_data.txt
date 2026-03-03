@@ -1,23 +1,58 @@
 https://json-generator.com/#
 
+
+
 [
-  '{{repeat(10)}}',
+  "{{repeat(4000)}}",
   {
-    "source": "Node_{{random(1, 20)}}",
-    "source_id": "sfi_smart_ocean;demo;d1;{{random(1, 20)}}",
+    "source": "Node 1",
+    "source_id": "sfi_smart_ocean;demo;d1;1",
     "location": {
-      "latitude": '{{random(59.5, 61.0)}}',
-      "longitude": '{{random(5.263733, 5.23)}}'
+      "latitude": 60.090717,
+      "longitude": 5.263733
     },
-    "time": "{{date(new Date(2025,0,1), new Date(2026,0,19)).toISOString().replace('Z','')}}000",
+
+    "time": "{{new Date(1735689600000 + index()*1800000).toISOString().replace('Z','')}}000",
+
     "observations": [
-      '{{repeat(1,6)}}',
       {
-        "source": "{{random('Battery module PROBE','Aanderaa Conductivity PROBE')}}",
-        "source_id": "sfi_smart_ocean;demo;d1;{{random(1, 3)}};{{random('BATTERY_MODULE','AANDERAA_CONDUCTIVITY')}}",
-        "parameter": "{{random('battery_voltage_mv','sea_water_electrical_conductivity','sea_water_temperature')}}",
-        "value": '{{random(0, 5000)}}',
-        "unit": "{{random('mV','S m-1','degrees_C')}}",
+        "source": "Aanderaa Temperature PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_TEMPERATURE",
+        "parameter": "sea_water_temperature",
+        "value": "{{floating(-2.0, 20.0, 2)}}",
+        "unit": "degrees_C",
+        "qualityCodes": [0]
+      },
+      {
+        "source": "Aanderaa Conductivity PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_CONDUCTIVITY",
+        "parameter": "sea_water_electrical_conductivity",
+        "value": "{{floating(2.0, 6.0, 3)}}",
+        "unit": "S m-1",
+        "qualityCodes": [0]
+      },
+      {
+        "source": "Aanderaa Salinity PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_SALINITY",
+        "parameter": "sea_water_salinity",
+        "value": "{{floating(10.0, 40.0, 2)}}",
+        "unit": "PSU",
+        "qualityCodes": [0]
+      },
+      {
+        "source": "Aanderaa Oxygen PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_OXYGEN",
+        "parameter": "dissolved_oxygen",
+        "value": "{{floating(50.0, 450.0, 1)}}",
+        "unit": "umol L-1",
+        "qualityCodes": [0]
+      },
+      {
+        "source": "Aanderaa Turbidity PROBE",
+        "source_id": "sfi_smart_ocean;demo;d1;1;AANDERAA_TURBIDITY",
+        "parameter": "turbidity",
+        "value": "{{floating(0.0, 200.0, 2)}}",
+        "unit": "NTU",
         "qualityCodes": [0]
       }
     ]
