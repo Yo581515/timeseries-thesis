@@ -1,5 +1,3 @@
-# tests/test_src/test_common/test_common.py
-
 from src.common.config import load_config
 from src.common.logger import get_logger
 from src.common.data_loader import load_json_data

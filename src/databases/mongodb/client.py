@@ -1,5 +1,3 @@
-# src/databases/mongodb/client.py
-
 import logging
 from pymongo import MongoClient
 from pymongo.mongo_client import MongoClient

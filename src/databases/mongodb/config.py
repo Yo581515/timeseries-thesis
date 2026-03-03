@@ -1,5 +1,3 @@
-# src/databases/mongodb/config.py
-
 class MongoDBConfigurationException(Exception):
     pass
 

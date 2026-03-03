@@ -1,4 +1,3 @@
-# src/databases/timescaledb/setup/setup_timescaledb_data.py
 
 import json
 import re

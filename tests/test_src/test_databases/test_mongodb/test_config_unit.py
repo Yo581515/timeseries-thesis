@@ -1,5 +1,3 @@
-# tests/test_src/test_databases/test_mongodb/test_config_unit.py
-
 import pytest
 
 from src.databases.mongodb.config import MongoDBConfig, get_mongodb_config, MongoDBConfigurationException

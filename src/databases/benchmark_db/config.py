@@ -1,5 +1,3 @@
-# src/databases/benchmark_db/config.py
-
 class BenchmarkDBConfigurationException(Exception):
     pass
 

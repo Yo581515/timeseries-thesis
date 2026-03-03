@@ -1,5 +1,3 @@
-# tests/test_src/test_databases/test_mongodb/test_mongodb_integration.py
-
 import logging
 import pytest
 

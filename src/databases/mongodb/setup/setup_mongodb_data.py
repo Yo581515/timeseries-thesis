@@ -1,5 +1,3 @@
-# src/databases/mongodb/setup/setup_mongodb_data.py
-
 import json
 import re
 from pathlib import Path
@@ -155,43 +153,5 @@ if __name__ == "__main__":
         )
 
     logger.info("Done.")
-
-
-
-# if __name__ == "__main__":
-#     config_file_path = "./configs/config-mgdb-fwd.yml"
-#     config = load_config(config_file_path)
-
-#     logger = get_logger("setup_mongodb_data.py", config["general"]["log_file"])
-
-#     mongodb_config = get_mongodb_config(config["mongodb"])
-
-#     data_file = load_json_data("data/row_data/row_data_1.json")
-
-#     # optional cleanup/formatting
-#     data = [doc for doc in data_file if resolve_data(doc, logger)]
-    
-#     mdb_data = [doc for doc in data_file if make_strftime_from_utc(doc)]
-    
-#     pprint(mdb_data[0])
-#     print(is_obj_valid_json(mdb_data[0]))
-    
-    
-    
-#     # 1 get data
-#     mongodb_row_data_folder_path = "data/mongodb_data"
-    
-    
-    
-    
-    
-    
-#     # 2 resolve data
-    
-    
-    
-    
-#     # 3 save data
-#     mongodb_resolved_data_folder_path = "data/mongodb_data"
     
      

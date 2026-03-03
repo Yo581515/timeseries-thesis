@@ -1,5 +1,3 @@
-# src/databases/mongodb/mongodb_repository.py
-
 import logging
 
 from src.databases.mongodb.config import MongoDBConfig
@@ -141,73 +139,3 @@ class MongoDBRepository(MongoDBClient):
         except Exception as e:
             self.logger.exception("aggregate() error: %s", e)
             return []
-
-    # -----------------------
-    # UPDATE
-    # -----------------------
-    def update_one(self, query: dict, update_fields: dict, collection=None) -> bool:
-        if query is None or update_fields is None:
-            self.logger.error("update_one(): query/update_fields is None")
-            return False
-
-        col = collection if collection is not None else self.collection
-        if col is None:
-            raise RuntimeError("No collection available. Call connect_and_cache() first.")
-
-        try:
-            res = col.update_one(query, {"$set": update_fields})
-            self.logger.info("update_one(): modified=%d", res.modified_count)
-            return True
-        except Exception as e:
-            self.logger.exception("update_one() error: %s", e)
-            return False
-
-    def update_many(self, query: dict, update_fields: dict, collection=None) -> bool:
-        if query is None or update_fields is None:
-            self.logger.error("update_many(): query/update_fields is None")
-            return False
-
-        col = collection if collection is not None else self.collection
-        if col is None:
-            raise RuntimeError("No collection available. Call connect_and_cache() first.")
-
-        try:
-            res = col.update_many(query, {"$set": update_fields})
-            self.logger.info("update_many(): modified=%d", res.modified_count)
-            return True
-        except Exception as e:
-            self.logger.exception("update_many() error: %s", e)
-            return False
-
-    # -----------------------
-    # DELETE
-    # -----------------------
-    def delete_by_query(self, query: dict, collection=None) -> bool:
-        if query is None:
-            self.logger.error("delete_by_query(): query is None")
-            return False
-
-        col = collection if collection is not None else self.collection
-        if col is None:
-            raise RuntimeError("No collection available. Call connect_and_cache() first.")
-
-        try:
-            res = col.delete_many(query)
-            self.logger.info("delete_by_query(): deleted=%d", res.deleted_count)
-            return True
-        except Exception as e:
-            self.logger.exception("delete_by_query() error: %s", e)
-            return False
-
-    def drop_collection(self, collection=None) -> bool:
-        col = collection if collection is not None else self.collection
-        if col is None:
-            raise RuntimeError("No collection available. Call connect_and_cache() first.")
-
-        try:
-            col.drop()
-            self.logger.info("Dropped collection %s", self.collection_name)
-            return True
-        except Exception as e:
-            self.logger.exception("drop_collection() error: %s", e)
-            return False

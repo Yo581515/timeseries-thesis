@@ -1,5 +1,3 @@
-# src/databases/benchmark_db/benchmark_db.py
-
 import logging
 from pprint import pprint
 

@@ -1,5 +1,3 @@
-# src/benchmark/benchmark_mongodb_setup.py
-
 from pydoc import doc
 import time
 from pprint import pprint

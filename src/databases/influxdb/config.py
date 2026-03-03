@@ -1,5 +1,3 @@
-# src/databases/influxdb/config.py
-
 from src.common.config import load_config
 
 

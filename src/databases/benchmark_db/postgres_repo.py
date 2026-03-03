@@ -1,5 +1,3 @@
-# src/databases/benchmark_db/postgres_repo.py
-
 import logging
 from contextlib import contextmanager
 from typing import Any, Dict, Iterable, List, Optional, Type, TypeVar

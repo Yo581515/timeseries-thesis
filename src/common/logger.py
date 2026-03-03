@@ -1,5 +1,3 @@
-# src/common/logger.py
-
 import logging
 import os
 

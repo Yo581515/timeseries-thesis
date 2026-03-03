@@ -1,5 +1,3 @@
-# src/databases/benchmark_db/client.py
-
 import logging
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker

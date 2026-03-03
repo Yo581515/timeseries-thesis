@@ -1,5 +1,3 @@
-# src/databases/mongodb/setup/test_mongodb.py
-
 import time
 from pprint import pprint
 

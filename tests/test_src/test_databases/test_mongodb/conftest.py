@@ -1,5 +1,3 @@
-# tests/test_src/test_databases/test_mongodb/conftest.py
-
 import logging
 import os
 from pathlib import Path

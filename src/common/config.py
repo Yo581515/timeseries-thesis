@@ -1,5 +1,3 @@
-# src/common/config.py
-
 import yaml
 import os
 from jinja2 import Template

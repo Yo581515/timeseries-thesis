@@ -1,5 +1,3 @@
-# src/common/data_loader.py
-
 import json
 import os
 

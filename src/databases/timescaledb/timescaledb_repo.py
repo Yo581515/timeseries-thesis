@@ -1,5 +1,3 @@
-# src/databases/timescaledb/timescaledb_repo.py
-
 import time
 import logging
 from datetime import datetime, timedelta, timezone

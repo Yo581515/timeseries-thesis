@@ -1,5 +1,3 @@
-# src/databases/benchmark_db/models.py
-
 from datetime import datetime, timezone
 
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime

@@ -1,5 +1,3 @@
-# src/databases/timescaledb/config.py
-
 class TimeScaleDBConfigurationException(Exception):
     pass
 

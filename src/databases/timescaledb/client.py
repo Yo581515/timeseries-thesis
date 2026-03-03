@@ -1,5 +1,3 @@
-# src/databases/timescaledb/client.py
-
 import logging
 from contextlib import contextmanager
 from psycopg2.pool import SimpleConnectionPool

@@ -1,5 +1,3 @@
-# src/databases/mongodb/setup/test_container_connection.py
-
 from pymongo import MongoClient
 from datetime import datetime
 
