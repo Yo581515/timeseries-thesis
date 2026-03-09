@@ -139,3 +139,21 @@ class MongoDBRepository(MongoDBClient):
         except Exception as e:
             self.logger.exception("aggregate() error: %s", e)
             return []
+        
+        
+    
+    def delete_by_query(self, query: dict, collection=None) -> bool:
+        if query is None:
+            self.logger.error("delete_by_query(): query is None")
+            return False
+
+        col = collection if collection is not None else self.collection
+        if col is None:
+            raise RuntimeError("No collection available. Call connect_and_cache() first.")
+
+        try:
+            col.delete_many(query)
+            return True
+        except Exception as e:
+            self.logger.exception("delete_by_query() error: %s", e)
+            return False
