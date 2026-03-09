@@ -22,9 +22,7 @@ class BenchmarkDBRepo(BenchmarkDBClient):
     def __init__(self, postgres_config: BenchmarkDBConfig, logger: logging.Logger):
         super().__init__(postgres_config, logger)
 
-    # ----------------------------
-    # Session handling (reliable)
-    # ----------------------------
+  
     @contextmanager
     def session_scope(self) -> Session:
         if not self.SessionLocal:
@@ -46,9 +44,7 @@ class BenchmarkDBRepo(BenchmarkDBClient):
             raise ValueError("Repo.model is not set. Subclass must define model = <SQLAlchemy model>")
         return self.model
 
-    # ----------------------------
-    # Health
-    # ----------------------------
+ 
     def ping(self) -> bool:
         try:
             with self.session_scope() as db:
@@ -60,9 +56,7 @@ class BenchmarkDBRepo(BenchmarkDBClient):
             self.logger.error("Ping error: %s", e)
             return False
 
-    # ----------------------------
-    # INSERT
-    # ----------------------------
+
     def insert(self, obj: T) -> T:
         model = self._require_model()
         if not isinstance(obj, model):
@@ -87,13 +81,10 @@ class BenchmarkDBRepo(BenchmarkDBClient):
     
     
     def get_all(self) -> List[T]:
+        model = self._require_model()
         with self.session_scope() as db:
-            try:
-                return db.query(self.model).all()
-            finally:
-                db.close()
-                
-                
+            return db.query(model).all()
+                    
     
     def count(self) -> int:
         model = self._require_model()

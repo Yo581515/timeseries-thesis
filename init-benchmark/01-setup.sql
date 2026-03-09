@@ -1,30 +1,28 @@
+CREATE TABLE IF NOT EXISTS benchmark_one (
+    id BIGSERIAL PRIMARY KEY,
 
--- Enable TimescaleDB extension
-CREATE EXTENSION IF NOT EXISTS benchmark_db;
+    benchmark_name TEXT NOT NULL,
+    database_name TEXT NOT NULL,
+    dataset_name TEXT NOT NULL,
 
--- measurements data table
-CREATE TABLE IF NOT EXISTS benchmark (
-  time            timestamptz NOT NULL,
+    total_points INTEGER NOT NULL,
 
-  node_source    TEXT,
-  node_source_id  TEXT NOT NULL,
-  
-  latitude  DOUBLE PRECISION CHECK (latitude BETWEEN -90 AND 90),
-  longitude DOUBLE PRECISION CHECK (longitude BETWEEN -180 AND 180),  
+    total_seconds DOUBLE PRECISION NOT NULL,
+    throughput_points_per_sec DOUBLE PRECISION NOT NULL,
 
-  sensor_source     TEXT,
-  sensor_source_id  TEXT NOT NULL,
+    success BOOLEAN NOT NULL DEFAULT TRUE,
 
-  parameter       TEXT NOT NULL,
-  value           DOUBLE PRECISION,
-  unit            TEXT,
-  quality_codes   INT[],
-
-  PRIMARY KEY (time, node_source_id, sensor_source_id, parameter)
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-SELECT create_hypertable('benchmark', 'time', chunk_time_interval => INTERVAL '7 days', if_not_exists => TRUE);
 
-CREATE INDEX ON benchmark (node_source_id, time DESC);
-CREATE INDEX ON benchmark (parameter, time DESC);
-CREATE INDEX ON benchmark (sensor_source_id, time DESC);
+CREATE INDEX IF NOT EXISTS idx_benchmark_one_benchmark_name
+    ON benchmark_one (benchmark_name);
 
+CREATE INDEX IF NOT EXISTS idx_benchmark_one_database_name
+    ON benchmark_one (database_name);
+
+CREATE INDEX IF NOT EXISTS idx_benchmark_one_dataset_name
+    ON benchmark_one (dataset_name);
+
+CREATE INDEX IF NOT EXISTS idx_benchmark_one_created_at
+    ON benchmark_one (created_at DESC);

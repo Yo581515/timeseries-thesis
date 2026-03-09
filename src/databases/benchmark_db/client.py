@@ -22,36 +22,29 @@ class BenchmarkDBClient:
         self.engine = None
         self.SessionLocal = None
 
-    def connect(self) -> bool:
+    def connect(self) -> None:
         try:
             self.logger.info("Connecting to Postgres...")
-
-            # Set schema as default via search_path
             self.engine = create_engine(
                 self.url,
                 connect_args={"options": f"-csearch_path={self.schema}"},
                 pool_pre_ping=True,
             )
-            self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+            self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine, expire_on_commit=False,)
 
-            # Ensure schema exists
             with self.engine.begin() as conn:
                 conn.execute(text(f'CREATE SCHEMA IF NOT EXISTS "{self.schema}"'))
-
-            # Smoke test connection
             db = self.SessionLocal()
             try:
                 db.execute(text("SELECT 1"))
             finally:
                 db.close()
-
             self.logger.info("Connected to Postgres successfully.")
-            return True
         except Exception as e:
             self.logger.error("Connection error: %s", e)
-            return False
+            raise Exception(f"Failed to connect to Postgres: {e}")
 
-    def create_tables(self) -> bool:
+    def create_tables(self) -> None:
         """
         Creates tables for all models imported into Base.metadata.
         Make sure you import src.databases.benchmark_db.models before calling this.
@@ -65,9 +58,9 @@ class BenchmarkDBClient:
             return True
         except Exception as e:
             self.logger.error("Create tables error: %s", e)
-            return False
+            raise Exception(f"Failed to create tables: {e}")
 
-    def disconnect(self) -> bool:
+    def disconnect(self) -> None:
         try:
             self.logger.info("Disconnecting from Postgres...")
             if self.engine:
@@ -76,7 +69,7 @@ class BenchmarkDBClient:
             return True
         except Exception as e:
             self.logger.error("Disconnection error: %s", e)
-            return False
+            raise Exception(f"Failed to disconnect: {e}")   
 
 
 if __name__ == "__main__":
@@ -84,7 +77,7 @@ if __name__ == "__main__":
     from src.common.logger import get_logger
     from src.databases.benchmark_db.config import get_postgres_config
 
-    bmdb_config_file_path = "./configs/config-benchmark.yml"
+    bmdb_config_file_path = "./configs/config-benchmarkdb.yml"
     bmdb_config_dict = load_config(bmdb_config_file_path)
     logger = get_logger("client.py", bmdb_config_dict["general"]["log_file"])
 

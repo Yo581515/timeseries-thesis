@@ -3,11 +3,11 @@ from pprint import pprint
 
 from src.databases.benchmark_db.postgres_repo import BenchmarkDBRepo
 from src.databases.benchmark_db.config import BenchmarkDBConfig
-from src.databases.benchmark_db.models import Benchmark  # IMPORTANT: registers model with Base.metadata
+from src.databases.benchmark_db.models import BenchmarkOne  # IMPORTANT: registers model with Base.metadata
 
 
 class BenchmarkDB(BenchmarkDBRepo):
-    model = Benchmark
+    model = BenchmarkOne
 
     def __init__(self, benchmark_db_config: BenchmarkDBConfig, logger: logging.Logger):
         super().__init__(benchmark_db_config, logger)
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         bm_db.ping()
         print("BenchmarkDB is connected and ready.")
 
-        entry = Benchmark(
+        entry = BenchmarkOne(
             benchmark_name="ingestion.insert_many.fixed_batch",
             database_name="mongodb",
             dataset_name="smart_ocean_sample_v1",
@@ -42,15 +42,30 @@ if __name__ == "__main__":
         )
         bm_db.insert(entry)
         print("Inserted benchmark entry:")
-        data_points = bm_db.get_all()
-        print(len(data_points))
-        if  len(data_points) > 0:
-            d_p = data_points[0]
-            print(d_p)
-            print()
-                
-        # bm_db.clear_table()
+        
     except Exception as e:
         logger.error(f"An error occurred: {e}")
     finally:
         bm_db.disconnect()
+
+
+    print("\nNow testing querying benchmark entries...")
+# quiry
+    try:
+        bm_db.connect()
+        bm_db.create_tables()  # creates Benchmark table
+        bm_db.ping()
+        data_points = bm_db.get_all()
+        print(len(data_points))
+        print("All entries:")
+        
+        if len(data_points) > 0:
+            print("First entry:")
+            d_p = data_points[0]
+            print(d_p) 
+            # print()
+                
+        # bm_db.clear_table()
+    except Exception as e:
+        logger.error(f"An error occurred during querying: {e}")
+        

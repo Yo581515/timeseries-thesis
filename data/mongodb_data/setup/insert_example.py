@@ -66,6 +66,9 @@ if __name__ == "__main__":
         end = time.time()
         print(f"Query time: {end - start:.4f} sec")
         # pprint(docs[:2])
+        
+        # # # reset collection for test
+        # repo.delete_by_query({})
 
     finally:
         repo.disconnect()

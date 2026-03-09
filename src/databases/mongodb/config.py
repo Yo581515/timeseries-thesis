@@ -17,7 +17,7 @@ class MongoDBConfig:
         self.MONGODB_DATABASE_NAME = database
         self.MONGODB_COLLECTION_NAME = collection
         
-        self.MONGODB_MODE = mode  # "local" | "atlas"
+        self.MONGODB_MODE = mode  # localhost | container | atlas
 
     def __str__(self):
         return (

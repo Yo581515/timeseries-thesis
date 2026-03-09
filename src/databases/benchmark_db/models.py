@@ -9,8 +9,8 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-class Benchmark(Base):
-    __tablename__ = "benchmark"
+class BenchmarkOne(Base):
+    __tablename__ = "benchmark_one"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
@@ -35,9 +35,10 @@ class Benchmark(Base):
 
     def __str__(self) -> str:
         # Human-friendly, multi-line summary (safe and readable in terminal/logs).
+        print(f"BenchmarkOne __str__ called for id={self.id}")
         created_at = self.created_at.isoformat() if self.created_at else "N/A"
         return (
-            f"Benchmark {self.id}\n"
+            f"BenchmarkOne {self.id}\n"
             f"  name:        {self.benchmark_name}\n"
             f"  database:    {self.database_name}\n"
             f"  dataset:     {self.dataset_name}\n"
