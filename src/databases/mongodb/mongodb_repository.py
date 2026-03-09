@@ -16,9 +16,7 @@ class MongoDBRepository(MongoDBClient):
         self.db = None
         self.collection = None
 
-    # -----------------------
-    # Connection + caching
-    # -----------------------
+  
     def connect_and_cache(self) -> bool:
         """
         Connect and cache db/collection objects for fast use in benchmarks.
@@ -26,22 +24,35 @@ class MongoDBRepository(MongoDBClient):
         if not self.connect():
             self.logger.error("connect_and_cache(): connect() failed")
             return False
-
-        self.db = self.client[self.database_name]
-        self.collection = self.db[self.collection_name]
-
-        # Optional: verify access without counting as "connect" time in your benchmark
+        
+        if self.database_name is None:
+            self.logger.error("connect_and_cache(): database_name is None")
+            raise ValueError("database_name is required")
+        
+        if self.collection_name is None:
+            self.logger.error("connect_and_cache(): collection_name is None")
+            raise ValueError("collection_name is required")
+        
         try:
-            self.client.admin.command("ping")
+            self.db = self.client[self.database_name]
         except Exception as e:
-            self.logger.exception("MongoDB ping failed after connect: %s", e)
-            return False
+            self.logger.exception("Error accessing database '%s': %s", self.database_name, e)
+            raise RuntimeError(f"Failed to access database '{self.database_name}'") from e
+        
+        try:
+            self.collection = self.db[self.collection_name]
+        except Exception as e:
+            self.logger.exception("Error accessing collection '%s': %s", self.collection_name, e)
+            raise RuntimeError(f"Failed to access collection '{self.collection_name}'") from e
+            
+        
+        
 
         self.logger.info("Cached db/collection handles (db=%s, collection=%s)", self.database_name, self.collection_name)
         return True
-
+    
+    
     def disconnect(self) -> bool:
-        # clear cached handles
         self.db = None
         self.collection = None
         return super().disconnect()
@@ -54,106 +65,95 @@ class MongoDBRepository(MongoDBClient):
             raise RuntimeError("Collection not cached. Call connect_and_cache() first.")
         return self.collection
 
-    # -----------------------
-    # Health
-    # -----------------------
+
     def ping(self) -> bool:
         if self.client is None:
             self.logger.error("ping(): not connected")
-            return False
+            raise RuntimeError("Not connected to MongoDB. Call connect() first.")
         try:
             self.client.admin.command("ping")
             self.logger.info("Ping OK.")
             return True
         except Exception as e:
             self.logger.exception("Ping error: %s", e)
-            return False
+            raise RuntimeError("Ping failed.") from e
 
-    # -----------------------
-    # INSERT
-    # -----------------------
-    def insert_one(self, doc: dict, collection=None) -> bool:
-        """
-        If you pass collection=repo.collection, this method avoids any lookup overhead.
-        """
+   
+   
+    def insert_one(self, doc: dict) -> bool:
         if not doc:
             self.logger.error("insert_one(): empty doc")
-            return False
+            raise ValueError("Document cannot be empty")
 
-        col = collection if collection is not None else self.collection
-        if col is None:
+        if self.collection is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")
 
         try:
-            col.insert_one(doc)
+            self.collection.insert_one(doc)
             return True
         except Exception as e:
             self.logger.exception("insert_one() error: %s", e)
-            return False
+            raise RuntimeError("Failed to insert document.") from e
 
-    def insert_many(self, docs: list[dict], ordered: bool = False, collection=None) -> bool:
+    def insert_many(self, docs: list[dict], ordered: bool = False) -> bool:
         if not docs:
             self.logger.error("insert_many(): empty docs")
-            return False
+            raise ValueError("Documents cannot be empty")
 
-        col = collection if collection is not None else self.collection
-        if col is None:
+        if self.collection is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")
 
         try:
-            col.insert_many(docs, ordered=ordered)
+            self.collection.insert_many(docs, ordered=ordered)
             return True
         except Exception as e:
             self.logger.exception("insert_many() error: %s", e)
-            return False
+            raise RuntimeError("Failed to insert documents.") from e
 
-    # -----------------------
-    # READ
-    # -----------------------
-    def find_by_query(self, query: dict, collection=None) -> list[dict]:
+  
+  
+    def find_by_query(self, query: dict) -> list[dict]:
         if query is None:
             self.logger.error("find_by_query(): query is None")
-            return []
+            raise ValueError("Query cannot be None")
 
-        col = collection if collection is not None else self.collection
-        if col is None:
+        if self.collection is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")
 
         try:
-            return list(col.find(query))
+            return list(self.collection.find(query))
         except Exception as e:
             self.logger.exception("find_by_query() error: %s", e)
-            return []
+            raise RuntimeError("Failed to find documents.") from e
 
-    def aggregate(self, pipeline: list[dict], collection=None) -> list[dict]:
+
+    def aggregate(self, pipeline: list[dict]) -> list[dict]:
         if not pipeline:
             self.logger.error("aggregate(): empty pipeline")
             return []
 
-        col = collection if collection is not None else self.collection
-        if col is None:
+        if self.collection is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")
 
         try:
-            return list(col.aggregate(pipeline))
+            return list(self.collection.aggregate(pipeline))
         except Exception as e:
             self.logger.exception("aggregate() error: %s", e)
-            return []
-        
+            raise RuntimeError("Failed to aggregate documents.") from e
+
         
     
-    def delete_by_query(self, query: dict, collection=None) -> bool:
+    def delete_by_query(self, query: __dict__) -> bool:
         if query is None:
             self.logger.error("delete_by_query(): query is None")
-            return False
+            raise ValueError("Query cannot be None")
 
-        col = collection if collection is not None else self.collection
-        if col is None:
+        if self.collection is None:
             raise RuntimeError("No collection available. Call connect_and_cache() first.")
 
         try:
-            col.delete_many(query)
+            self.collection.delete_many(query)
             return True
         except Exception as e:
             self.logger.exception("delete_by_query() error: %s", e)
-            return False
+            raise RuntimeError("Failed to delete documents.") from e

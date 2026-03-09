@@ -23,7 +23,7 @@ class MongoDBClient:
         self.database_name = mongodb_config.MONGODB_DATABASE_NAME
         self.collection_name = mongodb_config.MONGODB_COLLECTION_NAME
 
-        self.mongo_mode = mongodb_config.MONGODB_MODE  # localhost/mongodb | atlas
+        self.mongo_mode = mongodb_config.MONGODB_MODE  # localhost | container | atlas
 
         self.client = None
         

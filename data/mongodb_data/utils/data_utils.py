@@ -9,27 +9,29 @@ from pathlib import Path
 def convert_time(data_point: dict, logger: logging.Logger) -> bool:
     """Convert 'time' field to timezone-aware UTC datetime."""
     try:
-        if "time" not in data_point or not data_point["time"]:
+        time_val = data_point.get("time")
+
+        if not time_val:
             logger.error("[convert_time] Missing 'time'")
             return False
 
-        time_str = data_point["time"]
+        if isinstance(time_val, str):
+            time_val = time_val.replace("Z", "+00:00")
+            dt = datetime.fromisoformat(time_val)
 
-        # Handle Z format
-        if isinstance(time_str, str):
-            
-            time_str = time_str.replace("Z", "+00:00")
+        elif isinstance(time_val, datetime):
+            dt = time_val
 
-        dt = datetime.fromisoformat(time_str)
+        else:
+            logger.error("[convert_time] Invalid 'time' type")
+            return False
 
-        # Ensure UTC
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
         else:
             dt = dt.astimezone(timezone.utc)
 
         data_point["time"] = dt
-
         return True
 
     except Exception as e:
