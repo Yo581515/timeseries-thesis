@@ -140,7 +140,7 @@ if __name__ == "__main__":
     _timescaledb_config = get_timescaledb_config(config["database"])
 
     entity = "data"
-    phenomenon = "measurements"
+    phenomenon = "observations"
 
     input_folder = Path("data/row_data")
     out_folder = Path(config["general"]["timescaledb_data_folder_path"])

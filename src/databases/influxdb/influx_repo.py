@@ -26,6 +26,7 @@ class InfluxRepo(InfluxDB_Client):
                 self.logger.error(f"Failed to connect to InfluxDB, pinged: {ping}")
         except Exception as e:
             self.logger.error(f"Error connecting to InfluxDB: {e}")
+            raise Exception(f"Error connecting to InfluxDB: {e}")
             
             
     
@@ -60,7 +61,7 @@ class InfluxRepo(InfluxDB_Client):
             
         except Exception as e:
             self.logger.error(f"Error inserting one observation into InfluxDB: {e}")
-            
+            raise Exception(f"Error inserting one observation into InfluxDB: {e}")
             
     def insert_observations(self, obs_list: list[Observation]):
         try:
@@ -99,7 +100,7 @@ class InfluxRepo(InfluxDB_Client):
             
         except Exception as e:
             self.logger.error(f"Error inserting observations into InfluxDB: {e}")
-            
+            raise Exception(f"Error inserting observations into InfluxDB: {e}")
      
 
 
@@ -167,7 +168,7 @@ class InfluxRepo(InfluxDB_Client):
         try:
             self.logger.info("Clearing all observations from InfluxDB...")
             delete_api = self.write_client.delete_api()
-            start = "2025-01-01T00:00:00Z"
+            start = "2023-01-01T00:00:00Z"
             stop = datetime.now(timezone.utc).isoformat()
             delete_api.delete(start, stop, '_measurement="observations"', bucket=self.bucket, org=self.org)
             self.logger.info("All observations cleared from InfluxDB.")
